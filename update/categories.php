@@ -15,7 +15,7 @@ if ($dados) {
     $queryCategorie =  "UPDATE subcategoria SET nome = :nome WHERE id = :id LIMIT 1";
     $editCategorie = $pdo->prepare($queryCategorie);
     $editCategorie->bindParam(":id", $dados["id"], PDO::PARAM_INT);
-    $editCategorie->bindParam(":nome", $dados["nomeCategoria"], PDO::PARAM_STR);
+    $editCategorie->bindParam(":nome", $dados["nome"], PDO::PARAM_STR);
     $editCategorie->execute();
 
     if ($editCategorie->rowCount()) {

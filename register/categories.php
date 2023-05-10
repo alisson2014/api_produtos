@@ -20,7 +20,7 @@ if ($data) {
     $queryCategoria = "INSERT INTO subcategoria VALUES (NULL, :nome)";
     $registerCategoria = $pdo->prepare($queryCategoria);
 
-    $registerCategoria->bindParam(":nome", $data["nomeCategoria"], PDO::PARAM_STR);
+    $registerCategoria->bindParam(":nome", $data["nome"], PDO::PARAM_STR);
     $registerCategoria->execute();
 
     if ($registerCategoria->rowCount()) {
