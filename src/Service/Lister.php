@@ -8,7 +8,7 @@ use Produtos\Action\Model\Consult;
 class Lister
 {
     use Consult;
-    private string $queryList;
+    private readonly string $queryList;
     private PDO $pdo;
 
     public function __construct(

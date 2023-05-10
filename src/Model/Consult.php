@@ -2,7 +2,6 @@
 
 namespace Produtos\Action\Model;
 
-use PDO;
 use PDOStatement;
 
 trait Consult
