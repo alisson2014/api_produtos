@@ -3,20 +3,14 @@
 namespace Produtos\Action\Service;
 
 use PDO;
-use Produtos\Action\Model\Consult;
 
-class Lister
+class Lister extends Connection
 {
-    use Consult;
-    private readonly string $queryList;
-    private PDO $pdo;
-
     public function __construct(
-        string $queryList,
+        string $query,
         PDO $pdo
     ) {
-        $this->queryList = $queryList;
-        $this->pdo = $pdo;
+        parent::__construct($query, $pdo);
     }
 
     public function returnsData(): array

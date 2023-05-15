@@ -6,7 +6,7 @@ header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET, POST");
 header("Content-Type: application/json; charset=UTF-8");
 
-include_once "../config.php";
+require_once "../config.php";
 
 $response_json = file_get_contents("php://input");
 $data = json_decode($response_json, true);
