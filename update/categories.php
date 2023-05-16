@@ -11,6 +11,11 @@ include_once "../config.php";
 $response_json = file_get_contents("php://input");
 $dados = json_decode($response_json, true);
 
+$reponse = [
+    "status" => false,
+    "message" => "Erro ao editar no banco de dados"
+];
+
 if ($dados) {
     $queryCategorie =  "UPDATE subcategoria SET nome = :nome WHERE id = :id LIMIT 1";
     $editCategorie = $pdo->prepare($queryCategorie);
@@ -19,23 +24,14 @@ if ($dados) {
     $editCategorie->execute();
 
     if ($editCategorie->rowCount()) {
-        $response = [
+        http_response_code(200);
+        echo json_encode([
             "status" => true,
             "message" => "Categoria editada com sucesso"
-        ];
-        http_response_code(200);
-        echo json_encode($response);
+        ]);
     } else {
-        $reponse = [
-            "status" => false,
-            "message" => "Erro ao editar no banco de dados"
-        ];
         echo json_encode($response);
     }
 } else {
-    $response = [
-        "status" => false,
-        "message" => "Erro ao editar no banco de dados."
-    ];
     echo json_encode($response);
 }

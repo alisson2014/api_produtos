@@ -12,8 +12,8 @@ $response_json = file_get_contents("php://input");
 $data = json_decode($response_json, true);
 
 $response = [
-    "status" => true,
-    "message" => "Categoria cadastrada com sucesso"
+    "status" => false,
+    "message" => "Categoria não cadastrada com sucesso!"
 ];
 
 if ($data) {
@@ -25,12 +25,11 @@ if ($data) {
 
     if ($registerCategoria->rowCount()) {
         http_response_code(200);
-        echo json_encode($response);
+        echo json_encode([
+            "status" => true,
+            "message" => "Categoria cadastrada com sucesso"
+        ]);
     } else {
-        $response = [
-            "status" => false,
-            "message" => "Categoria não cadastrada com sucesso!"
-        ];
         echo json_encode($response);
     }
 } else {
