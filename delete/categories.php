@@ -23,7 +23,7 @@ if ($deleteCategorie->execute()) {
     http_response_code(200);
     echo json_encode($response);
 } else {
-    $reponse = [
+    $response = [
         "status" => false,
         "message" => "Erro ao excluir categoria"
     ];

@@ -13,7 +13,7 @@ $dados = json_decode($response_json, true);
 
 $response = [
     "status" => false,
-    "message" => "Erro ao editar no banco de dados"
+    "message" => "Erro ao editar no banco de dados."
 ];
 
 if ($dados) {
@@ -26,7 +26,7 @@ if ($dados) {
     if ($editCategorie->rowCount()) {
         $response = [
             "status" => true,
-            "message" => "Categoria editada com sucesso"
+            "message" => "Categoria editada com sucesso."
         ];
         http_response_code(200);
         echo json_encode($response);

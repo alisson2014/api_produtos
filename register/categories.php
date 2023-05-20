@@ -13,7 +13,7 @@ $data = json_decode($response_json, true);
 
 $response = [
     "status" => false,
-    "message" => "Categoria não cadastrada com sucesso!"
+    "message" => "Categoria não cadastrada com sucesso."
 ];
 
 if ($data) {
@@ -26,7 +26,7 @@ if ($data) {
     if ($registerCategoria->rowCount()) {
         $response = [
             "status" => true,
-            "message" => "Categoria cadastrada com sucesso"
+            "message" => "Categoria cadastrada com sucesso."
         ];
         http_response_code(200);
         echo json_encode($response);
