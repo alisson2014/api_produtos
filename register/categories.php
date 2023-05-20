@@ -3,7 +3,7 @@
 //Cabeçalhos HTTP
 header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, POST");
+header("Access-Control-Allow-Methods: POST");
 header("Content-Type: application/json; charset=UTF-8");
 
 require_once "../config.php";
@@ -24,18 +24,11 @@ if ($data) {
     $registerCategoria->execute();
 
     if ($registerCategoria->rowCount()) {
-        http_response_code(200);
-        echo json_encode([
+        $response = [
             "status" => true,
             "message" => "Categoria cadastrada com sucesso"
-        ]);
-    } else {
+        ];
+        http_response_code(200);
         echo json_encode($response);
-    }
-} else {
-    $response = [
-        "status" => false,
-        "message" => "Categoria não cadastrada com sucesso!"
-    ];
-    echo json_encode($response);
-}
+    } else echo json_encode($response);
+} else echo json_encode($response);

@@ -3,7 +3,7 @@
 //Cabeçalhos HTTP
 header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, UPDATE");
+header("Access-Control-Allow-Methods: UPDATE");
 header("Content-Type: application/json; charset=UTF-8");
 
 include_once "../config.php";
@@ -11,7 +11,7 @@ include_once "../config.php";
 $response_json = file_get_contents("php://input");
 $dados = json_decode($response_json, true);
 
-$reponse = [
+$response = [
     "status" => false,
     "message" => "Erro ao editar no banco de dados"
 ];
@@ -24,14 +24,11 @@ if ($dados) {
     $editCategorie->execute();
 
     if ($editCategorie->rowCount()) {
-        http_response_code(200);
-        echo json_encode([
+        $response = [
             "status" => true,
             "message" => "Categoria editada com sucesso"
-        ]);
-    } else {
+        ];
+        http_response_code(200);
         echo json_encode($response);
-    }
-} else {
-    echo json_encode($response);
-}
+    } else echo json_encode($response);
+} else echo json_encode($response);
