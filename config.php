@@ -1,14 +1,11 @@
 <?php
-$server = "localhost";
-$user = "root";
-$password = "";
-$dbName = "produtos like";
+const SERVER = "localhost";
+const USER  = "root";
+const PASSWORD = "";
+const DBNAME = "produtos like";
 
 try {
-    $pdo = new PDO("mysql:host={$server};dbname={$dbName};charset=utf8;", $user, $password);
+    $pdo = new PDO("mysql:host=" . SERVER . ";dbname=" . DBNAME . ";charset=utf8;", USER, PASSWORD);
 } catch (Exception $erro) {
-    echo "
-            <p>Erro ao conectar com o a base de dados.</p>
-            <p style='color: #f00'>{$erro}</p>
-        ";
+    echo "<p>Erro ao conectar com o a base de dados.</p>";
 }
