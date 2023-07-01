@@ -17,7 +17,6 @@ class CategorieListController
     {
         $list = $this->categorieRepository->all();
         echo json_encode($list);
-
         http_response_code(200);
     }
 }
