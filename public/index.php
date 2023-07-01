@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Produtos\Action\Controller\Categorie\CategorieListController;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
 
-require_once(__DIR__ . "/../autoload.php");
+require_once(__DIR__ . "/../vendor/autoload.php");
 require_once(__DIR__ . "/../config.php");
 
 $routes = require_once(__DIR__ . "/../config/routes.php");
