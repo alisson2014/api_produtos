@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
+use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class EditCategorieController
+class EditCategorieController implements RequestHandlerInterface
 {
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
     }
 
-    public function handle()
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response_json = file_get_contents("php://input");
-        $dados = json_decode($response_json, true);
-        $nomeCategoria = $dados["nomeCategoria"];
-        $id = filter_var($dados["id"], FILTER_VALIDATE_INT);
+        $body = json_decode($request->getBody()->getContents());
+        $id = filter_var($body->id, FILTER_VALIDATE_INT);
+        $nomeCategoria = $body->nomeCategoria;
 
-        if (!$nomeCategoria || !$id) {
-            echo json_encode([
-                "status" => "Erro1"
-            ]);
-            exit();
+        if ($nomeCategoria === "" || !$id) {
+            return new Response(304, body: json_encode([
+                "status" => "Erro"
+            ]));
         }
 
         $categorie = new Categorie($nomeCategoria);
@@ -34,14 +36,13 @@ class EditCategorieController
         $success = $this->categorieRepository->update($categorie);
 
         if (!$success) {
-            echo json_encode([
+            return new Response(304, body: json_encode([
                 "status" => "Erro"
-            ]);
-            exit();
+            ]));
         }
 
-        http_response_code(200);
-        header("Content-Type: application-json");
-        echo json_encode(["status" => "Editado"]);
+        return new Response(200, [
+            "Content-Type" => "application-json"
+        ], json_encode(["status" => "Editado"]));
     }
 }

@@ -4,41 +4,42 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
+use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class NewCategorieController
+class NewCategorieController implements RequestHandlerInterface
 {
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
     }
 
-    public function handle()
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response_json = file_get_contents("php://input");
-        $dados = json_decode($response_json, true);
-        $nomeCategoria = $dados["nomeCategoria"];
+        $dados = json_decode($request->getBody()->getContents());
+        $nomeCategoria = $dados->nomeCategoria;
 
-        if (!$nomeCategoria) {
-            echo json_encode([
-                "status" => "Erro1"
-            ]);
-            exit();
+        if (is_null($nomeCategoria) || $nomeCategoria === "") {
+            return new Response(304, body: json_encode([
+                "status" => "Erro ao cadastrar"
+            ]));
         }
 
         $categorie = new Categorie($nomeCategoria);
         $success = $this->categorieRepository->add($categorie);
 
         if (!$success) {
-            echo json_encode([
-                "status" => "Erro"
-            ]);
-            exit();
+            return new Response(304, body: json_encode([
+                "status" => "Erro ao cadastrar"
+            ]));
         }
 
-        http_response_code(201);
-        header("Content-Type: application-json");
-        echo json_encode(["status" => "Registrado"]);
+        return new Response(201, [
+            "Content-Type" => "application-json"
+        ], json_encode(["status" => "Registrado"]));
     }
 }

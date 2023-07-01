@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Produtos\Action\Controller\Categorie\CategorieListController;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
 
 require_once(__DIR__ . "/../vendor/autoload.php");
 require_once(__DIR__ . "/../config.php");
@@ -23,4 +25,24 @@ if (array_key_exists($key, $routes)) {
     $controller = new CategorieListController($categorieRepo);
 }
 
-$controller->handle();
+$psr17Factory = new Psr17Factory();
+
+$creator = new ServerRequestCreator(
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
+);
+
+$request = $creator->fromGlobals();
+
+$response = $controller->handle($request);
+
+http_response_code($response->getStatusCode());
+foreach ($response->getHeaders() as $name => $values) {
+    foreach ($values as $value) {
+        header(sprintf('%s: %s', $name, $value), false);
+    }
+}
+
+echo $response->getBody();

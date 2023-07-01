@@ -4,29 +4,40 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
+use Nyholm\Psr7\Response;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class DeleteCategorieController
+class DeleteCategorieController implements RequestHandlerInterface
 {
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
     }
 
-    public function handle()
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $queryParams = $request->getQueryParams();
+        $id = filter_var($queryParams["id"], FILTER_VALIDATE_INT);
 
-        $result = $this->categorieRepository->remove(intval($id));
-        if (!$result) {
-            echo json_encode([
-                "status" => "Erro"
-            ]);
-            exit();
+        if (!$id) {
+            return new Response(304, body: json_encode([
+                "status" => "Erro ao excluir"
+            ]));
         }
 
-        http_response_code(200);
-        header("Content-Type: application-json");
-        echo json_encode(["status" => "Ok"]);
+        $result = $this->categorieRepository->remove($id);
+
+        if (!$result) {
+            return new Response(304, body: json_encode([
+                "status" => "Erro ao excluir"
+            ]));
+        }
+
+        return new Response(200, [
+            "Content-Type" => "application-json"
+        ], json_encode(["status" => "Ok"]));
     }
 }
