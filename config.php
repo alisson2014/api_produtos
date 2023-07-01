@@ -1,11 +1,9 @@
 <?php
-const SERVER = "localhost";
-const USER  = "root";
-const PASSWORD = "";
-const DBNAME = "produtos like";
 
-try {
-    $pdo = new PDO("mysql:host=" . SERVER . ";dbname=" . DBNAME . ";charset=utf8;", USER, PASSWORD);
-} catch (Exception $erro) {
-    echo "<p>Erro ao conectar com o a base de dados.</p>";
-}
+declare(strict_types=1);
+
+use Produtos\Action\Infrastructure\Persistence\ConnectionCreator;
+
+require_once "autoload.php";
+
+$conn = ConnectionCreator::createConnection();
