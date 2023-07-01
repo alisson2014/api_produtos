@@ -19,7 +19,7 @@ class EditCategorieController
         $response_json = file_get_contents("php://input");
         $dados = json_decode($response_json, true);
         $nomeCategoria = $dados["nomeCategoria"];
-        $id = $dados["id"];
+        $id = filter_var($dados["id"], FILTER_VALIDATE_INT);
 
         if (!$nomeCategoria || !$id) {
             echo json_encode([
@@ -40,8 +40,8 @@ class EditCategorieController
             exit();
         }
 
-        echo json_encode([
-            "status" => "Ok"
-        ]);
+        http_response_code(200);
+        header("Content-Type: application-json");
+        echo json_encode(["status" => "Editado"]);
     }
 }

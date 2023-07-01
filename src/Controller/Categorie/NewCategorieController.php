@@ -37,8 +37,8 @@ class NewCategorieController
             exit();
         }
 
-        echo json_encode([
-            "status" => "Ok"
-        ]);
+        http_response_code(201);
+        header("Content-Type: application-json");
+        echo json_encode(["status" => "Registrado"]);
     }
 }

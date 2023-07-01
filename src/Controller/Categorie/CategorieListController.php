@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
+use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
 
 class CategorieListController
@@ -15,8 +16,15 @@ class CategorieListController
 
     public function handle()
     {
-        $list = $this->categorieRepository->all();
-        echo json_encode($list);
+        $categorieList = array_map(function (Categorie $categorie): array {
+            return [
+                "id" => $categorie->id,
+                "nomeCategoria" => $categorie->categorieName
+            ];
+        }, $this->categorieRepository->all());
+
         http_response_code(200);
+        header("Content-Type: application-json");
+        echo json_encode($categorieList);
     }
 }
