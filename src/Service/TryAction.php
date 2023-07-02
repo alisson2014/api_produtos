@@ -31,7 +31,7 @@ trait TryAction
         if ($returnId) {
             return [
                 "result" => $result,
-                "id" => $lastId
+                "id" => intval($lastId)
             ];
         }
 

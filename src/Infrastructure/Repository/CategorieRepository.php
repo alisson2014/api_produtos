@@ -41,7 +41,7 @@ class CategorieRepository implements CategorieRepo
         $result = $status["result"];
 
         if ($result) {
-            $categorie->setId(intval($status["id"]));
+            $categorie->setId($status["id"]);
         }
 
         return $result;

@@ -7,8 +7,7 @@ namespace Produtos\Action\Controller\Categorie;
 use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 class NewCategorieController implements RequestHandlerInterface

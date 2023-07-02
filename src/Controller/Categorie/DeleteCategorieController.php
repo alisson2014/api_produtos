@@ -6,8 +6,7 @@ namespace Produtos\Action\Controller\Categorie;
 
 use Nyholm\Psr7\Response;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 class DeleteCategorieController implements RequestHandlerInterface
