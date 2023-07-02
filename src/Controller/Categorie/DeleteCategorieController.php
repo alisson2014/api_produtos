@@ -6,11 +6,13 @@ namespace Produtos\Action\Controller\Categorie;
 
 use Nyholm\Psr7\Response;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Produtos\Action\Service\Show;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class DeleteCategorieController implements RequestHandlerInterface
+final class DeleteCategorieController implements RequestHandlerInterface
 {
+    use Show;
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -22,21 +24,15 @@ class DeleteCategorieController implements RequestHandlerInterface
         $id = filter_var($queryParams["id"], FILTER_VALIDATE_INT);
 
         if (!$id) {
-            return new Response(304, body: json_encode([
-                "status" => "Erro ao excluir"
-            ]));
+            return $this->showInvalidArgs("Id inválido");
         }
 
         $result = $this->categorieRepository->remove($id);
 
         if (!$result) {
-            return new Response(304, body: json_encode([
-                "status" => "Erro ao excluir"
-            ]));
+            return $this->showInternalError();
         }
 
-        return new Response(200, [
-            "Content-Type" => "application-json"
-        ], json_encode(["status" => "Ok"]));
+        return $this->showStatusOk("Categoria excluida com sucesso!");
     }
 }

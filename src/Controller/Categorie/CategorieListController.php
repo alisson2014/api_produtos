@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
-use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Produtos\Action\Service\Show;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class CategorieListController implements RequestHandlerInterface
+final class CategorieListController implements RequestHandlerInterface
 {
+    use Show;
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -26,6 +27,6 @@ class CategorieListController implements RequestHandlerInterface
             ];
         }, $this->categorieRepository->all());
 
-        return new Response(200, ["Content-Type" => "application-json"], json_encode($categorieList));
+        return $this->showResponse($categorieList);
     }
 }

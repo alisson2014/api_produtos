@@ -3,13 +3,14 @@
 namespace Produtos\Action\Controller\Categorie;
 
 use Nyholm\Psr7\Response;
-use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Produtos\Action\Service\Show;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FindCategorieController implements RequestHandlerInterface
+final class FindCategorieController implements RequestHandlerInterface
 {
+    use Show;
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -21,13 +22,10 @@ class FindCategorieController implements RequestHandlerInterface
         $id = filter_var($queryParams["id"], FILTER_VALIDATE_INT);
 
         if (!$id) {
-            return new Response(304, body: json_encode([
-                "status" => "Id inválido"
-            ]));
+            return $this->showInvalidArgs("Id inválido");
         }
 
         $categorie = $this->categorieRepository->find($id);
-
-        return new Response(200, ["Content-Type" => "application-json"], json_encode($categorie));
+        return $this->showResponse($categorie);
     }
 }

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
-use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Produtos\Action\Service\Show;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class EditCategorieController implements RequestHandlerInterface
+final class EditCategorieController implements RequestHandlerInterface
 {
+    use Show;
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -23,10 +24,12 @@ class EditCategorieController implements RequestHandlerInterface
         $id = filter_var($body->id, FILTER_VALIDATE_INT);
         $nomeCategoria = $body->nomeCategoria;
 
-        if ($nomeCategoria === "" || !$id) {
-            return new Response(304, body: json_encode([
-                "status" => "Erro"
-            ]));
+        if (!$id) {
+            return $this->showInvalidArgs("Id inválido");
+        }
+
+        if (!$nomeCategoria) {
+            return $this->showInvalidArgs("Nome da categoria inválido");
         }
 
         $categorie = new Categorie($nomeCategoria);
@@ -35,13 +38,9 @@ class EditCategorieController implements RequestHandlerInterface
         $success = $this->categorieRepository->update($categorie);
 
         if (!$success) {
-            return new Response(304, body: json_encode([
-                "status" => "Erro"
-            ]));
+            return $this->showInternalError();
         }
 
-        return new Response(200, [
-            "Content-Type" => "application-json"
-        ], json_encode(["status" => "Editado"]));
+        return $this->showStatusOk("Categoria editada com sucesso");
     }
 }

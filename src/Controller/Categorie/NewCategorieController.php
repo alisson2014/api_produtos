@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
-use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Produtos\Action\Service\Show;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class NewCategorieController implements RequestHandlerInterface
+final class NewCategorieController implements RequestHandlerInterface
 {
+    use Show;
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -22,23 +23,17 @@ class NewCategorieController implements RequestHandlerInterface
         $dados = json_decode($request->getBody()->getContents());
         $nomeCategoria = $dados->nomeCategoria;
 
-        if (is_null($nomeCategoria) || $nomeCategoria === "") {
-            return new Response(304, body: json_encode([
-                "status" => "Erro ao cadastrar"
-            ]));
+        if (empty($nomeCategoria)) {
+            return $this->showInvalidArgs("Nome da categoria não pode ser vázio");
         }
 
         $categorie = new Categorie($nomeCategoria);
         $success = $this->categorieRepository->add($categorie);
 
         if (!$success) {
-            return new Response(304, body: json_encode([
-                "status" => "Erro ao cadastrar"
-            ]));
+            return $this->showInternalError();
         }
 
-        return new Response(201, [
-            "Content-Type" => "application-json"
-        ], json_encode(["status" => "Registrado"]));
+        return $this->showStatusOk("Categoria cadastrada com sucesso", 201);
     }
 }
