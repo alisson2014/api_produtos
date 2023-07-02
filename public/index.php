@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Produtos\Action\Controller\Categorie\CategorieListController;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
+use Produtos\Action\Controller\Error404Controller;
 
 require_once(__DIR__ . "/../vendor/autoload.php");
 require_once(__DIR__ . "/../config.php");
@@ -22,7 +22,7 @@ if (array_key_exists($key, $routes)) {
     $controllerClass = $routes["$httpMethod|$pathInfo"];
     $controller = new $controllerClass($categorieRepo);
 } else {
-    $controller = new CategorieListController($categorieRepo);
+    $controller = new Error404Controller();
 }
 
 $psr17Factory = new Psr17Factory();
