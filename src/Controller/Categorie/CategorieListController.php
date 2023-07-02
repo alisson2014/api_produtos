@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
+use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
 use Produtos\Action\Service\Show;
@@ -20,6 +21,23 @@ final class CategorieListController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $queryParams = $request->getQueryParams();
+        $id = $queryParams["id"] ?? null;
+
+        if (is_null($id)) {
+            return $this->listCategories();
+        }
+
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        if (!$id) {
+            return $this->showInvalidArgs("Id inválido");
+        }
+
+        return $this->findCategorie($id);
+    }
+
+    private function listCategories(): Response
+    {
         $categorieList = array_map(function (Categorie $categorie): array {
             return [
                 "id" => $categorie->id,
@@ -28,5 +46,11 @@ final class CategorieListController implements RequestHandlerInterface
         }, $this->categorieRepository->all());
 
         return $this->showResponse($categorieList);
+    }
+
+    private function findCategorie(int $id): Response
+    {
+        $categorie = $this->categorieRepository->find($id);
+        return $this->showResponse($categorie);
     }
 }

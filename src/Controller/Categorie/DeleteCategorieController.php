@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
-use Nyholm\Psr7\Response;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
 use Produtos\Action\Service\Show;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};

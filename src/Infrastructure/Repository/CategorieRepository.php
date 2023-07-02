@@ -9,7 +9,7 @@ use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Domain\Repository\CategorieRepo;
 use Produtos\Action\Service\TryAction;
 
-class CategorieRepository implements CategorieRepo
+final class CategorieRepository implements CategorieRepo
 {
     use TryAction;
 
