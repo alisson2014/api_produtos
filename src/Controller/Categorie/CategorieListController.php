@@ -28,12 +28,8 @@ final class CategorieListController implements RequestHandlerInterface
             return $this->listCategories();
         }
 
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if (!$id) {
-            return $this->showInvalidArgs("Id inválido");
-        }
-
-        return $this->findCategorie($id);
+        $filterId = filter_var($id, FILTER_VALIDATE_INT);
+        return $this->findCategorie($filterId);
     }
 
     private function listCategories(): Response
@@ -48,8 +44,13 @@ final class CategorieListController implements RequestHandlerInterface
         return $this->showResponse($categorieList);
     }
 
-    private function findCategorie(int $id): Response
+    /** @param int|bool $id */
+    private function findCategorie(int|bool $id): Response
     {
+        if (!$id) {
+            return $this->showInvalidArgs("Id inválido");
+        }
+
         $categorie = $this->categorieRepository->find($id);
         return $this->showResponse($categorie);
     }
