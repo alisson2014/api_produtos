@@ -22,7 +22,7 @@ trait Show
      * @param string $args
      * @param int $code
      */
-    private function showStatusOk(
+    private function showStatus(
         string $args,
         int $code = 200
     ): Response {
