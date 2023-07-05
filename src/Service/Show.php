@@ -9,7 +9,13 @@ use Nyholm\Psr7\Response;
 trait Show
 {
     private const JSON_CONTENT = [
-        "Content-Type" => "application-json"
+        "Content-Type" => "application-json",
+    ];
+
+    private const ACCESS_HEADERS = [
+        "Access-Control-Allow-Headers" => "*",
+        "Access-Control-Allow-Origin" => "http://localhost:3000",
+        "Content-Type" => "application-json; charset=UTF-8",
     ];
 
     /** @param array|object $list */

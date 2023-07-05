@@ -12,11 +12,11 @@ require_once(__DIR__ . "/../vendor/autoload.php");
 $diContainer = require_once(__DIR__ . "/../config/dependencies.php");
 $routes = require_once(__DIR__ . "/../config/routes.php");
 
-$pathInfo = $_SERVER["PATH_INFO"] ?? "/";
+$pathInfo = $_SERVER["PATH_INFO"];
 $httpMethod = $_SERVER["REQUEST_METHOD"];
 
 if (array_key_exists($pathInfo, $routes)) {
-    $controllerClass = $routes[$pathInfo];
+    $controllerClass = $routes[$pathInfo][$httpMethod];
     $controller = $diContainer->get($controllerClass);
 } else {
     $controller = new Error404Controller();
