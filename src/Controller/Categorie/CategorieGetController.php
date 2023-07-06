@@ -10,7 +10,7 @@ use Produtos\Action\Service\Show;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class CategorieGetController implements RequestHandlerInterface
+final class CategorieGetController implements RequestHandlerInterface
 {
     use Show;
 
