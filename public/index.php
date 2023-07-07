@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Produtos\Action\Controller\Error404Controller;
+use Produtos\Action\Controller\OptionsController;
 
 require_once(__DIR__ . "/../vendor/autoload.php");
 
@@ -14,6 +15,10 @@ $routes = require_once(__DIR__ . "/../config/routes.php");
 
 $pathInfo = $_SERVER["PATH_INFO"];
 $httpMethod = $_SERVER["REQUEST_METHOD"];
+
+if ($httpMethod === "OPTIONS") {
+    OptionsController::handle();
+}
 
 if (array_key_exists($pathInfo, $routes)) {
     $controllerClass = $routes[$pathInfo][$httpMethod];
