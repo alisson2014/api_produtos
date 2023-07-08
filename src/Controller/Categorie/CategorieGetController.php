@@ -42,7 +42,7 @@ final class CategorieGetController implements RequestHandlerInterface
         $categorieList = array_map(function (Categorie $categorie): array {
             return [
                 "id" => $categorie->id,
-                "nomeCategoria" => $categorie->categorieName
+                "nomeCategoria" => $categorie->nomeCategoria
             ];
         }, $this->categorieRepository->all());
 

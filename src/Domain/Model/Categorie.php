@@ -9,7 +9,7 @@ readonly class Categorie
     public int $id;
 
     public function __construct(
-        public string $categorieName
+        public string $nomeCategoria
     ) {
     }
 
