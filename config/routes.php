@@ -10,4 +10,8 @@ return [
         "DELETE" => Produtos\Action\Controller\Categorie\CategorieDeleteController::class,
         "OPTIONS" => Produtos\Action\Controller\Categorie\CategorieOptionsController::class
     ],
+    "/produtos" => [
+        "GET" => Produtos\Action\Controller\Product\ProductGetController::class,
+        "POST" => Produtos\Action\Controller\Product\ProductPostController::class
+    ],
 ];
