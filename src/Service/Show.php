@@ -41,7 +41,7 @@ trait Show
 
     private function showInternalError(): Response
     {
-        $errorResponse = $this->makeResponse("error", "Erro ao tentar salvar/excluir na base de dados");
+        $errorResponse = $this->makeResponse("error", "Erro ao tentar salvar na base de dados");
         return new Response(500, self::ACCESS_HEADERS, json_encode($errorResponse));
     }
 

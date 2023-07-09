@@ -36,7 +36,7 @@ final class CategorieRepository implements CategorieRepo
         $this->pdo->beginTransaction();
         $sql = "INSERT INTO subcategoria (id, nome) VALUES (NULL, ?)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(1, $categorie->categorieName);
+        $stmt->bindValue(1, $categorie->nomeCategoria);
         $status = $this->tryAction($stmt, true);
         $result = $status["result"];
 
@@ -63,7 +63,7 @@ final class CategorieRepository implements CategorieRepo
         $this->pdo->beginTransaction();
         $sql = "UPDATE subcategoria SET nome = :nome WHERE id = :id LIMIT 1;";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":nome", $categorie->categorieName);
+        $stmt->bindValue(":nome", $categorie->nomeCategoria);
         $stmt->bindValue(":id", $categorie->id, PDO::PARAM_INT);
         $status = $this->tryAction($stmt);
 
