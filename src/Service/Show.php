@@ -26,9 +26,10 @@ trait Show
      */
     private function showStatus(
         string $args,
-        int $code = 200
+        int $code = 200,
+        string $type = "success"
     ): Response {
-        $okResponse = $this->makeResponse("success", $args);
+        $okResponse = $this->makeResponse($type, $args);
         return new Response($code, self::ACCESS_HEADERS, json_encode($okResponse));
     }
 

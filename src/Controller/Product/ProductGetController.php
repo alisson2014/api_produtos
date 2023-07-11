@@ -50,6 +50,11 @@ final class ProductGetController implements RequestHandlerInterface
             ];
         }, $this->productRepository->all());
 
+        if (empty($productList)) {
+            $res = "A busca na base de dados não retornou nenhum registro";
+            return $this->showStatus($res, type: "info");
+        }
+
         return $this->showResponse($productList);
     }
 
@@ -60,6 +65,10 @@ final class ProductGetController implements RequestHandlerInterface
     private function findProduct(int $id): ResponseInterface
     {
         $product = $this->productRepository->find($id);
+        if (empty($product)) {
+            $res = "A busca na base de dados não retornou nenhum registro";
+            return $this->showStatus($res, type: "info");
+        }
         $category = $this->productRepository->findCategorie($product->idCategoria);
         $allOfProduct = [
             ...get_object_vars($product),

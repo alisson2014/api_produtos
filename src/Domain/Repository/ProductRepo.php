@@ -10,5 +10,5 @@ interface ProductRepo extends Repository
 {
     public function add(Product $product): bool;
     public function update(Product $product): bool;
-    public function find(int $id): Product;
+    public function find(int $id): Product|array;
 }

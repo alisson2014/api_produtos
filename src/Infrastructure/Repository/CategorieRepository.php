@@ -33,6 +33,10 @@ final class CategorieRepository implements CategorieRepo
             ->query("SELECT * FROM subcategoria ORDER BY id ASC")
             ->fetchAll();
 
+        if (count($categorieList) === 0) {
+            return [];
+        }
+
         return array_map(
             $this->hydrateCategorie(...),
             $categorieList

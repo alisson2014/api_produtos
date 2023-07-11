@@ -8,11 +8,16 @@ use Produtos\Action\Domain\Model\Categorie;
 
 trait FindCategorie
 {
-    public function findCategorie(int $id): Categorie
+    public function findCategorie(int $id): Categorie|array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM subcategoria WHERE id = ?;");
         $stmt->bindValue(1, $id, \PDO::PARAM_INT);
         $stmt->execute();
+        $result = $stmt->fetch();
+
+        if (!$result) {
+            return [];
+        }
 
         return $this->hydrateCategorie($stmt->fetch());
     }

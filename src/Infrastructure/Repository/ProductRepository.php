@@ -22,7 +22,7 @@ final class ProductRepository implements ProductRepo
     /** @return Product[] */
     public function all(): array
     {
-        $categorieList = $this->pdo
+        $productList = $this->pdo
             ->query(
                 "SELECT p.*,s.nome as nomeCategoria 
                 FROM produto as p 
@@ -31,9 +31,13 @@ final class ProductRepository implements ProductRepo
             )
             ->fetchAll();
 
+        if (count($productList) === 0) {
+            return [];
+        }
+
         return array_map(
             $this->hydrateProduct(...),
-            $categorieList
+            $productList
         );
     }
 
@@ -85,13 +89,19 @@ final class ProductRepository implements ProductRepo
         return $status;
     }
 
-    public function find(int $id): Product
+    /** @return Product|[] */
+    public function find(int $id): Product|array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM produto WHERE id = ?;");
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $stmt->execute();
+        $result = $stmt->fetch();
 
-        return $this->hydrateProduct($stmt->fetch());
+        if (!$result) {
+            return [];
+        }
+
+        return $this->hydrateProduct($result);
     }
 
     private function hydrateProduct(array $productData): Product

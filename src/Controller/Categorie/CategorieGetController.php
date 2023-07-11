@@ -39,12 +39,19 @@ final class CategorieGetController implements RequestHandlerInterface
     /** @return ResponseInterface */
     private function listCategories(): ResponseInterface
     {
+        $allCategories = $this->categorieRepository->all();
+
+        if (empty($allCategories)) {
+            $res = "A busca na base de dados não retornou nenhum registro";
+            return $this->showStatus($res, type: "info");
+        }
+
         $categorieList = array_map(function (Categorie $categorie): array {
             return [
                 "id" => $categorie->id,
                 "nomeCategoria" => $categorie->nomeCategoria
             ];
-        }, $this->categorieRepository->all());
+        }, $allCategories);
 
         return $this->showResponse($categorieList);
     }
@@ -56,6 +63,12 @@ final class CategorieGetController implements RequestHandlerInterface
     private function findCategorie(int $id): ResponseInterface
     {
         $categorie = $this->categorieRepository->find($id);
+
+        if (empty($categorie)) {
+            $res = "A busca na base de dados não retornou nenhum registro";
+            return $this->showStatus($res, type: "info");
+        }
+
         return $this->showResponse($categorie);
     }
 }

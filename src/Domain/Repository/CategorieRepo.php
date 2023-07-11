@@ -10,5 +10,5 @@ interface CategorieRepo extends Repository
 {
     public function add(Categorie $categorie): bool;
     public function update(Categorie $categorie): bool;
-    public function find(int $id): Categorie;
+    public function find(int $id): Categorie|array;
 }
