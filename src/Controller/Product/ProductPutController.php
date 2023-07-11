@@ -4,13 +4,12 @@ namespace Produtos\Action\Controller\Product;
 
 use Produtos\Action\Domain\Model\Product;
 use Produtos\Action\Infrastructure\Repository\ProductRepository;
-use Produtos\Action\Service\Show;
+use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class ProductPutController implements RequestHandlerInterface
 {
-    use Show;
     public function __construct(
         private ProductRepository $productRepository
     ) {
@@ -25,7 +24,7 @@ final class ProductPutController implements RequestHandlerInterface
         $idCategoria = $body->idCategoria;
 
         if (!$id) {
-            return $this->showInvalidArgs("Id inválido.");
+            return Helper::invalidRequest("Id inválido.");
         }
 
         $product = new Product($produto, $valor, $idCategoria);
@@ -33,9 +32,9 @@ final class ProductPutController implements RequestHandlerInterface
         $success = $this->productRepository->update($product);
 
         if (!$success) {
-            return $this->showInternalError();
+            return Helper::internalError();
         }
 
-        return $this->showStatus("Produto editado com sucesso");
+        return Helper::showStatus("Produto editado com sucesso");
     }
 }

@@ -6,13 +6,12 @@ namespace Produtos\Action\Controller\Product;
 
 use Produtos\Action\Domain\Model\Product;
 use Produtos\Action\Infrastructure\Repository\ProductRepository;
-use Produtos\Action\Service\Show;
+use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ServerRequestInterface, ResponseInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class ProductPostController implements RequestHandlerInterface
 {
-    use Show;
     public function __construct(
         private ProductRepository $productRepository
     ) {
@@ -29,9 +28,9 @@ final class ProductPostController implements RequestHandlerInterface
         $success = $this->productRepository->add($product);
 
         if (!$success) {
-            return $this->showInternalError();
+            return Helper::internalError();
         }
 
-        return $this->showStatus("Categoria cadastrada com sucesso", 201);
+        return Helper::showStatus("Categoria cadastrada com sucesso", 201);
     }
 }

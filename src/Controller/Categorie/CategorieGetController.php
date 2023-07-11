@@ -6,14 +6,12 @@ namespace Produtos\Action\Controller\Categorie;
 
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
-use Produtos\Action\Service\Show;
+use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class CategorieGetController implements RequestHandlerInterface
 {
-    use Show;
-
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -30,7 +28,7 @@ final class CategorieGetController implements RequestHandlerInterface
 
         $id = filter_var($id, FILTER_VALIDATE_INT);
         if (!$id) {
-            return $this->showInvalidArgs("Id inválido.");
+            return Helper::invalidRequest("Id inválido");
         }
 
         return $this->findCategorie($id);
@@ -42,8 +40,7 @@ final class CategorieGetController implements RequestHandlerInterface
         $allCategories = $this->categorieRepository->all();
 
         if (empty($allCategories)) {
-            $res = "A busca na base de dados não retornou nenhum registro";
-            return $this->showStatus($res, type: "info");
+            return Helper::nothingFound();
         }
 
         $categorieList = array_map(function (Categorie $categorie): array {
@@ -53,7 +50,7 @@ final class CategorieGetController implements RequestHandlerInterface
             ];
         }, $allCategories);
 
-        return $this->showResponse($categorieList);
+        return Helper::showResponse($categorieList);
     }
 
     /**
@@ -65,10 +62,9 @@ final class CategorieGetController implements RequestHandlerInterface
         $categorie = $this->categorieRepository->find($id);
 
         if (empty($categorie)) {
-            $res = "A busca na base de dados não retornou nenhum registro";
-            return $this->showStatus($res, type: "info");
+            return Helper::nothingFound();
         }
 
-        return $this->showResponse($categorie);
+        return Helper::showResponse($categorie);
     }
 }

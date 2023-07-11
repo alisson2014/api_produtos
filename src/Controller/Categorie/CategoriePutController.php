@@ -6,13 +6,12 @@ namespace Produtos\Action\Controller\Categorie;
 
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
-use Produtos\Action\Service\Show;
+use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class CategoriePutController implements RequestHandlerInterface
 {
-    use Show;
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -25,11 +24,11 @@ final class CategoriePutController implements RequestHandlerInterface
         $nomeCategoria = $body->nomeCategoria;
 
         if (!$id) {
-            return $this->showInvalidArgs("Id inválido.");
+            return Helper::showStatus("Id inválido");
         }
 
         if (empty($nomeCategoria)) {
-            return $this->showInvalidArgs("Nome da categoria não pode ser vázio.");
+            return Helper::showStatus("Nome da categoria não pode ser vázio.");
         }
 
         $categorie = new Categorie($nomeCategoria);
@@ -37,9 +36,9 @@ final class CategoriePutController implements RequestHandlerInterface
         $success = $this->categorieRepository->update($categorie);
 
         if (!$success) {
-            return $this->showInternalError();
+            return Helper::internalError();
         }
 
-        return $this->showStatus("Categoria editada com sucesso");
+        return Helper::showStatus("Categoria editada com sucesso");
     }
 }

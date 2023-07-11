@@ -6,13 +6,12 @@ namespace Produtos\Action\Controller\Product;
 
 use Produtos\Action\Domain\Model\Product;
 use Produtos\Action\Infrastructure\Repository\ProductRepository;
-use Produtos\Action\Service\Show;
+use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class ProductGetController implements RequestHandlerInterface
 {
-    use Show;
 
     public function __construct(
         private ProductRepository $productRepository
@@ -30,7 +29,7 @@ final class ProductGetController implements RequestHandlerInterface
 
         $id = filter_var($id, FILTER_VALIDATE_INT);
         if (!$id) {
-            return $this->showInvalidArgs("Id inválido.");
+            return Helper::invalidRequest("Id inválido.");
         }
 
         return $this->findProduct($id);
@@ -51,11 +50,10 @@ final class ProductGetController implements RequestHandlerInterface
         }, $this->productRepository->all());
 
         if (empty($productList)) {
-            $res = "A busca na base de dados não retornou nenhum registro";
-            return $this->showStatus($res, type: "info");
+            return Helper::nothingFound();
         }
 
-        return $this->showResponse($productList);
+        return Helper::showResponse($productList);
     }
 
     /**
@@ -66,14 +64,13 @@ final class ProductGetController implements RequestHandlerInterface
     {
         $product = $this->productRepository->find($id);
         if (empty($product)) {
-            $res = "A busca na base de dados não retornou nenhum registro";
-            return $this->showStatus($res, type: "info");
+            return Helper::nothingFound();
         }
         $category = $this->productRepository->findCategorie($product->idCategoria);
         $allOfProduct = [
             ...get_object_vars($product),
             "nomeCategoria" => $category->nomeCategoria
         ];
-        return $this->showResponse($allOfProduct);
+        return Helper::showResponse($allOfProduct);
     }
 }

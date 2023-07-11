@@ -3,14 +3,12 @@
 namespace Produtos\Action\Controller\Product;
 
 use Produtos\Action\Infrastructure\Repository\ProductRepository;
-use Produtos\Action\Service\Show;
+use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class ProductDeleteController implements RequestHandlerInterface
 {
-    use Show;
-
     public function __construct(
         private ProductRepository $productRepository
     ) {
@@ -22,15 +20,15 @@ final class ProductDeleteController implements RequestHandlerInterface
         $id = filter_var($queryParams["id"], FILTER_VALIDATE_INT);
 
         if (!$id) {
-            return $this->showInvalidArgs("Id inválido");
+            return Helper::invalidRequest("Id inválido");
         }
 
         $result = $this->productRepository->remove($id);
 
         if (!$result) {
-            return $this->showInternalError();
+            return Helper::internalError();
         }
 
-        return $this->showStatus("Produto excluido com sucesso!", 204);
+        return Helper::showStatus(code: 204);
     }
 }
