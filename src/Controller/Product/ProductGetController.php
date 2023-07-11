@@ -44,8 +44,7 @@ final class ProductGetController implements RequestHandlerInterface
                 "id" => $product->id,
                 "nomeProduto" => $product->nomeProduto,
                 "categoria" => $product->categoria,
-                "valor" => $product->valor,
-                "idCategoria" => $product->idCategoria
+                "valor" => $product->valor
             ];
         }, $this->productRepository->all());
 
@@ -58,7 +57,7 @@ final class ProductGetController implements RequestHandlerInterface
      */
     private function findProduct(int $id): ResponseInterface
     {
-        $categorie = $this->productRepository->find($id);
-        return $this->showResponse($categorie);
+        $product = $this->productRepository->find($id);
+        return $this->showResponse($product);
     }
 }

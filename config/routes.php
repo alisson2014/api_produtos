@@ -12,6 +12,8 @@ return [
     ],
     "/produtos" => [
         "GET" => Produtos\Action\Controller\Product\ProductGetController::class,
-        "POST" => Produtos\Action\Controller\Product\ProductPostController::class
+        "POST" => Produtos\Action\Controller\Product\ProductPostController::class,
+        "PUT" => Produtos\Action\Controller\Product\ProductPutController::class,
+        "DELETE" => Produtos\Action\Controller\Product\ProductDeleteController::class,
     ],
 ];

@@ -75,6 +75,7 @@ final class ProductRepository implements ProductRepo
                 valor = :valor
                 WHERE id = :id LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":id", $product->id, PDO::PARAM_INT);
         $stmt->bindValue(":produto", $product->nomeProduto);
         $stmt->bindValue(":categoria_id", $product->idCategoria, PDO::PARAM_INT);
         $stmt->bindValue(":valor", $product->valor);
