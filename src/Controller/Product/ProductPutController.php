@@ -21,7 +21,6 @@ final class ProductPutController implements RequestHandlerInterface
         $body = json_decode($request->getBody()->getContents());
         $id = filter_var($body->id, FILTER_VALIDATE_INT);
         $produto = $body->nomeProduto;
-        $categoria = $body->categoria;
         $valor = $body->valor;
         $idCategoria = $body->idCategoria;
 
@@ -29,7 +28,7 @@ final class ProductPutController implements RequestHandlerInterface
             return $this->showInvalidArgs("Id inválido.");
         }
 
-        $product = new Product($produto, $categoria, $valor, $idCategoria);
+        $product = new Product($produto, $valor, $idCategoria);
         $product->setId($id);
         $success = $this->productRepository->update($product);
 

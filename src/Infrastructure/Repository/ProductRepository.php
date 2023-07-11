@@ -7,11 +7,12 @@ namespace Produtos\Action\Infrastructure\Repository;
 use PDO;
 use Produtos\Action\Domain\Model\Product;
 use Produtos\Action\Domain\Repository\ProductRepo;
+use Produtos\Action\Service\FindCategorie;
 use Produtos\Action\Service\TryAction;
 
 final class ProductRepository implements ProductRepo
 {
-    use TryAction;
+    use TryAction, FindCategorie;
 
     public function __construct(
         private PDO $pdo
@@ -44,7 +45,7 @@ final class ProductRepository implements ProductRepo
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":produto", $product->nomeProduto);
         $stmt->bindValue(":valor", $product->valor);
-        $stmt->bindValue(":categoria_id", $product->idCategoria);
+        $stmt->bindValue(":categoria_id", $product->idCategoria, PDO::PARAM_INT);
         $status = $this->tryAction($stmt, true);
         $result = $status["result"];
 
@@ -95,20 +96,9 @@ final class ProductRepository implements ProductRepo
 
     private function hydrateProduct(array $productData): Product
     {
-        $categoria = $this->findCategorie($productData["subcategoria"]);
-        $product = new Product($productData["nome"], $categoria, $productData["valor"], $productData["subcategoria"]);
+        $product = new Product($productData["nome"], $productData["valor"], $productData["subcategoria"]);
         $product->setId($productData["id"]);
 
         return $product;
-    }
-
-    private function findCategorie(int $id): string
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM subcategoria WHERE id = ?;");
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $fetch = $stmt->fetch();
-
-        return $fetch["nome"];
     }
 }

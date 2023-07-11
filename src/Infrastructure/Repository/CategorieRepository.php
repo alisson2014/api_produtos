@@ -7,15 +7,23 @@ namespace Produtos\Action\Infrastructure\Repository;
 use PDO;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Domain\Repository\CategorieRepo;
+use Produtos\Action\Service\FindCategorie;
 use Produtos\Action\Service\TryAction;
 
 final class CategorieRepository implements CategorieRepo
 {
-    use TryAction;
+    use TryAction, FindCategorie {
+        FindCategorie::findCategorie as find;
+    }
 
     public function __construct(
         private PDO $pdo
     ) {
+    }
+
+    private function getPdo(): PDO
+    {
+        return $this->pdo;
     }
 
     /** @return Categorie[] */
@@ -68,22 +76,5 @@ final class CategorieRepository implements CategorieRepo
         $status = $this->tryAction($stmt);
 
         return $status;
-    }
-
-    public function find(int $id): Categorie
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM subcategoria WHERE id = ?;");
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $this->hydrateCategorie($stmt->fetch());
-    }
-
-    private function hydrateCategorie(array $categorieData): Categorie
-    {
-        $categorie = new Categorie($categorieData["nome"]);
-        $categorie->setId($categorieData["id"]);
-
-        return $categorie;
     }
 }

@@ -40,10 +40,12 @@ final class ProductGetController implements RequestHandlerInterface
     private function listProducts(): ResponseInterface
     {
         $productList = array_map(function (Product $product): array {
+            $category = $this->productRepository->findCategorie($product->idCategoria);
+
             return [
                 "id" => $product->id,
                 "nomeProduto" => $product->nomeProduto,
-                "categoria" => $product->categoria,
+                "categoria" => $category->nomeCategoria,
                 "valor" => $product->valor
             ];
         }, $this->productRepository->all());
@@ -58,6 +60,11 @@ final class ProductGetController implements RequestHandlerInterface
     private function findProduct(int $id): ResponseInterface
     {
         $product = $this->productRepository->find($id);
-        return $this->showResponse($product);
+        $category = $this->productRepository->findCategorie($product->idCategoria);
+        $allOfProduct = [
+            ...get_object_vars($product),
+            "nomeCategoria" => $category->nomeCategoria
+        ];
+        return $this->showResponse($allOfProduct);
     }
 }

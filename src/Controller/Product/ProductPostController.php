@@ -22,11 +22,10 @@ final class ProductPostController implements RequestHandlerInterface
     {
         $body = json_decode($request->getBody()->getContents());
         $produto = $body->nomeProduto;
-        $categoria = $body->categoria;
         $valor = $body->valor;
         $idCategoria = $body->idCategoria;
 
-        $product = new Product($produto, $categoria, $valor, $idCategoria);
+        $product = new Product($produto, $valor, $idCategoria);
         $success = $this->productRepository->add($product);
 
         if (!$success) {
