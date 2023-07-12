@@ -19,7 +19,7 @@ trait FindCategorie
             return [];
         }
 
-        return $this->hydrateCategorie($stmt->fetch());
+        return $this->hydrateCategorie($result);
     }
 
     private function hydrateCategorie(array $categorieData): Categorie

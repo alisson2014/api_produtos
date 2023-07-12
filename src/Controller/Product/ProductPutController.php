@@ -18,13 +18,24 @@ final class ProductPutController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = json_decode($request->getBody()->getContents());
-        $id = filter_var($body->id, FILTER_VALIDATE_INT);
-        $produto = $body->nomeProduto;
-        $valor = $body->valor;
-        $idCategoria = $body->idCategoria;
+        $id = isset($body->id) ? filter_var($body->id, FILTER_VALIDATE_INT) : null;
+        $idCategoria = isset($body->idCategoria) ? filter_var($body->idCategoria, FILTER_VALIDATE_INT) : null;
+        $valor = isset($body->valor) ? filter_var($body->valor, FILTER_VALIDATE_FLOAT) : null;
+        $produto = isset($body->nomeProduto) ? $body->nomeProduto : null;
 
-        if (!$id) {
-            return Helper::invalidRequest("Id inválido.");
+        $error = "";
+
+        if (!$id || !$idCategoria) {
+            $notIsCategory = $idCategoria ?: "da categoria";
+            $error = "Id {$notIsCategory} inválido.";
+        } elseif (empty($produto) || !is_string($produto)) {
+            $error = "Nome do produto inválido.";
+        } elseif ($valor > 0 && $valor <= (10 ** 8)) {
+            $error = "Valor inválido, valor deve ser maior que 0 e menor que 100 milhões.";
+        }
+
+        if (!empty($error)) {
+            return Helper::invalidRequest($error);
         }
 
         $product = new Product($produto, $valor, $idCategoria);

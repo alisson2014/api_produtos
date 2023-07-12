@@ -24,11 +24,11 @@ final class CategoriePutController implements RequestHandlerInterface
         $nomeCategoria = $body->nomeCategoria;
 
         if (!$id) {
-            return Helper::showStatus("Id inválido");
+            return Helper::invalidRequest("Id inválido");
         }
 
         if (empty($nomeCategoria)) {
-            return Helper::showStatus("Nome da categoria não pode ser vázio.");
+            return Helper::invalidRequest("Nome da categoria não pode ser vázio.");
         }
 
         $categorie = new Categorie($nomeCategoria);
