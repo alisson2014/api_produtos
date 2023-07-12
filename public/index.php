@@ -15,7 +15,9 @@ $routes = require_once(__DIR__ . "/../config/routes.php");
 $pathInfo = $_SERVER["PATH_INFO"];
 $httpMethod = $_SERVER["REQUEST_METHOD"];
 
-if (array_key_exists($pathInfo, $routes)) {
+if ($httpMethod === "HEAD") $httpMethod = "GET";
+
+if (array_key_exists($pathInfo, $routes) && array_key_exists($httpMethod, $routes[$pathInfo])) {
     $controllerClass = $routes[$pathInfo][$httpMethod];
     $controller = $diContainer->get($controllerClass);
 } else {
