@@ -9,14 +9,16 @@ trait TryAction
     /**
      * @param \PDOStatement|bool $stmt
      * @param bool $returnId
-     * @return array|bool
+     * @return array|int
      */
     private function tryAction(
         \PDOStatement|bool $stmt,
         bool $returnId = false,
-    ): array|bool {
+    ): array|int {
         try {
-            $result = $stmt->execute();
+            $stmt->execute();
+
+            $result = $stmt->rowCount();
 
             if ($returnId) {
                 $lastId = $this->pdo->lastInsertId();

@@ -28,7 +28,7 @@ final class ProductPostController implements RequestHandlerInterface
 
         if (empty($produto) || !is_string($produto)) {
             $error = "Nome do produto inválido.";
-        } elseif ($valor > 0 && $valor <= (10 ** 8)) {
+        } elseif ($valor <= 0 && $valor > (10 ** 8)) {
             $error = "Valor inválido, valor deve ser maior que 0 e menor que 100 milhões.";
         } else if (!$idCategoria) {
             $error = "Id inválido.";

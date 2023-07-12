@@ -48,16 +48,17 @@ final class ProductRepository implements ProductRepo
         VALUES (NULL, :produto, :valor, :categoria_id)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":produto", $product->nomeProduto);
-        $stmt->bindValue(":valor", $product->valor);
+        $stmt->bindValue(":valor", strval($product->valor));
         $stmt->bindValue(":categoria_id", $product->idCategoria, PDO::PARAM_INT);
         $status = $this->tryAction($stmt, true);
         $result = $status["result"];
 
-        if ($result) {
+        if ($result > 0) {
             $product->setId($status["id"]);
+            return true;
         }
 
-        return $result;
+        return false;
     }
 
     public function remove(int $id): bool
@@ -68,7 +69,7 @@ final class ProductRepository implements ProductRepo
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);
 
-        return $result;
+        return $result > 0;
     }
 
     public function update(Product $product): bool
@@ -81,12 +82,12 @@ final class ProductRepository implements ProductRepo
                 WHERE id = :id LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":id", $product->id, PDO::PARAM_INT);
-        $stmt->bindValue(":produto", $product->nomeProduto);
+        $stmt->bindValue(":produto", $product->nomeProduto, PDO::PARAM_STR);
         $stmt->bindValue(":categoria_id", $product->idCategoria, PDO::PARAM_INT);
-        $stmt->bindValue(":valor", $product->valor);
-        $status = $this->tryAction($stmt);
+        $stmt->bindValue(":valor", strval($product->valor), PDO::PARAM_STR);
+        $result = $this->tryAction($stmt);
 
-        return $status;
+        return $result > 0;
     }
 
     /** @return Product|[] */
@@ -106,7 +107,7 @@ final class ProductRepository implements ProductRepo
 
     private function hydrateProduct(array $productData): Product
     {
-        $product = new Product($productData["nome"], $productData["valor"], $productData["subcategoria"]);
+        $product = new Product($productData["nome"], floatval($productData["valor"]), $productData["subcategoria"]);
         $product->setId($productData["id"]);
 
         return $product;

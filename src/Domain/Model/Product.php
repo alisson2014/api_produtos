@@ -10,7 +10,7 @@ readonly class Product
 
     public function __construct(
         public string $nomeProduto,
-        public string $valor,
+        public float $valor,
         public int $idCategoria
     ) {
     }
