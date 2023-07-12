@@ -25,6 +25,12 @@ final class CategorieDeleteController implements RequestHandlerInterface
             return Helper::invalidRequest("Id inválido");
         }
 
+        $hasProduct = $this->categorieRepository->hasProduct($id);
+
+        if ($hasProduct) {
+            return Helper::invalidRequest("Esta categoria não pode ser excluida pois possui produtos vinculados a ela.");
+        }
+
         $result = $this->categorieRepository->remove($id);
 
         if (!$result) {

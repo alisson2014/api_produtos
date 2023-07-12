@@ -63,12 +63,24 @@ final class CategorieRepository implements CategorieRepo
     public function remove(int $id): bool
     {
         $this->pdo->beginTransaction();
+
         $sql = "DELETE FROM subcategoria WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);
 
         return $result > 0;
+    }
+
+    public function hasProduct(int $id): bool
+    {
+        $hasProduct = "SELECT * FROM produto WHERE subcategoria = ?";
+        $stmtHasProduct = $this->pdo->prepare($hasProduct);
+        $stmtHasProduct->bindValue(1, $id, PDO::PARAM_INT);
+        $stmtHasProduct->execute();
+        $rowCountStmt = $stmtHasProduct->rowCount();
+
+        return $rowCountStmt > 0;
     }
 
     public function update(Categorie $categorie): bool
