@@ -95,7 +95,8 @@ final class ClientRepository implements ClientRepo
 
     private function hydrateClient(array $clientData): Client
     {
-        $client = new Client($clientData["nomeCliente"], $clientData["data"]);
+        $date = new \DateTime($clientData["data"]);
+        $client = new Client($clientData["nomeCliente"], $date);
         $client->setId($clientData["id"]);
 
         return $client;

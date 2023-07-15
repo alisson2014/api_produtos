@@ -16,4 +16,7 @@ return [
         "PUT" => Produtos\Action\Controller\Product\ProductPutController::class,
         "DELETE" => Produtos\Action\Controller\Product\ProductDeleteController::class,
     ],
+    "/orcamentos" => [
+        "GET" => Produtos\Action\Controller\Client\ClientGetController::class
+    ],
 ];
