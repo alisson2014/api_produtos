@@ -46,7 +46,7 @@ final class ClientGetController implements RequestHandlerInterface
         $clientList = array_map(function (Client $client): array {
             return [
                 "id" => $client->id,
-                "nomeCategoria" => $client->nomeCliente,
+                "nomeCliente" => $client->nomeCliente,
                 "dataOrçamento" => $client->dataOrcamento->format("d-m-Y")
             ];
         }, $allClients);

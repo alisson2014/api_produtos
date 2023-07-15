@@ -15,6 +15,8 @@ trait TryAction
         \PDOStatement|bool $stmt,
         bool $returnId = false,
     ): array|int {
+        $result = 0;
+
         try {
             $stmt->execute();
 
@@ -33,7 +35,7 @@ trait TryAction
         if ($returnId) {
             return [
                 "result" => $result ?? "",
-                "id" => (is_string($lastId) ? intval($lastId) : $lastId)
+                "id" => intval($lastId)
             ];
         }
 

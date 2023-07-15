@@ -82,10 +82,9 @@ final class ClientRepository implements ClientRepo
     public function update(Client $client): bool
     {
         $this->pdo->beginTransaction();
-        $sql = "UPDATE orcamento SET nomeCliente = :nomeCliente, data = :data
-        WHERE id = :id LIMIT 1";
+        $sql = "UPDATE orcamento SET nomeCliente = :nomeCliente, data = :data WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":nome", $client->nomeCliente, PDO::PARAM_STR);
+        $stmt->bindValue(":nomeCliente", $client->nomeCliente, PDO::PARAM_STR);
         $stmt->bindValue(":data", $client->dataOrcamento->format("Y-m-d"), PDO::PARAM_STR);
         $stmt->bindValue(":id", $client->id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);

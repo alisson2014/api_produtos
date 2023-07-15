@@ -19,6 +19,7 @@ return [
     "/orcamentos" => [
         "GET" => Produtos\Action\Controller\Client\ClientGetController::class,
         "POST" => Produtos\Action\Controller\Client\ClientPostController::class,
+        "PUT" => Produtos\Action\Controller\Client\ClientPutController::class,
         "DELETE" => Produtos\Action\Controller\Client\ClientDeleteController::class
     ],
 ];
