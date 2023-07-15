@@ -7,8 +7,7 @@ namespace Produtos\Action\Infrastructure\Repository;
 use PDO;
 use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Domain\Repository\CategorieRepo;
-use Produtos\Action\Service\FindCategorie;
-use Produtos\Action\Service\TryAction;
+use Produtos\Action\Service\{FindCategorie, TryAction};
 
 final class CategorieRepository implements CategorieRepo
 {
@@ -19,11 +18,6 @@ final class CategorieRepository implements CategorieRepo
     public function __construct(
         private PDO $pdo
     ) {
-    }
-
-    private function getPdo(): PDO
-    {
-        return $this->pdo;
     }
 
     /** @return Categorie[] */
