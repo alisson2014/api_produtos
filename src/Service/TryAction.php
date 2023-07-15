@@ -33,7 +33,7 @@ trait TryAction
         if ($returnId) {
             return [
                 "result" => $result ?? "",
-                "id" => intval($lastId)
+                "id" => (is_string($lastId) ? intval($lastId) : $lastId)
             ];
         }
 
