@@ -46,8 +46,14 @@ final class BudgetGetController implements RequestHandlerInterface
         $budgetList = array_map(function (Budget $budget): array {
             return [
                 "id" => $budget->id,
-                "cliente" => $budget->client,
-                "produtos" => $budget->product,
+                "cliente" => [
+                    "nomeCliente" => $budget->client->nomeCliente,
+                    "dataOrcamento" => $budget->client->dataOrcamento->format("d-m-Y")
+                ],
+                "produto" => [
+                    "nomeProduto" => $budget->product->nomeProduto,
+                    "valor" => $budget->product->valor
+                ],
                 "total" => $budget->total
             ];
         }, $allBudgets);
@@ -63,10 +69,24 @@ final class BudgetGetController implements RequestHandlerInterface
     {
         $budget = $this->budgetRepository->find($id);
 
+
         if (empty($budget)) {
             return Helper::nothingFound();
         }
 
-        return Helper::showResponse($budget);
+        $return = [
+            "id" => $budget->id,
+            "cliente" => [
+                "nomeCliente" => $budget->client->nomeCliente,
+                "dataOrcamento" => $budget->client->dataOrcamento->format("d-m-Y")
+            ],
+            "produto" => [
+                "nomeProduto" => $budget->product->nomeProduto,
+                "valor" => $budget->product->valor
+            ],
+            "total" => $budget->total
+        ];
+
+        return Helper::showResponse($return);
     }
 }

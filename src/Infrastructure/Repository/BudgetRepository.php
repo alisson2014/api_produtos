@@ -36,7 +36,21 @@ final class BudgetRepository implements BudgetRepo
 
     public function find(int $id): Budget|array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM produtosorcamento WHERE id = ?;");
+        $stmt = $this->pdo->prepare(
+            "SELECT o.id AS idOrcamento, 
+                o.nomeCliente  AS nomeCliente, 
+                o.data AS data, 
+                p.id AS idProduto, 
+                p.nome AS nomeProduto, 
+                p.valor AS valorProduto, 
+                SUM(p.valor * po.quantidade) AS total 
+                FROM orcamento AS o 
+                JOIN produtosorcamento AS po ON po.orcamento = o.id 
+                JOIN produto AS p ON p.id = po.produto 
+                WHERE o.id = ?
+                GROUP BY o.id 
+            "
+        );
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch();
@@ -75,17 +89,6 @@ final class BudgetRepository implements BudgetRepo
         $result = $this->tryAction($stmt);
 
         return $result > 0;
-    }
-
-    public function hasProduct(int $id): bool
-    {
-        $hasProduct = "SELECT * FROM produto WHERE subcategoria = ?";
-        $stmtHasProduct = $this->pdo->prepare($hasProduct);
-        $stmtHasProduct->bindValue(1, $id, PDO::PARAM_INT);
-        $stmtHasProduct->execute();
-        $rowCountStmt = $stmtHasProduct->rowCount();
-
-        return $rowCountStmt > 0;
     }
 
     public function update(Budget $budget): bool
