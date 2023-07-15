@@ -9,9 +9,14 @@ readonly class Budget
     public int $id;
 
     public function __construct(
-        private Client $client,
-        private Product $product,
-        private float $total
+        public Client $client,
+        public Product $product,
+        public float $total
     ) {
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

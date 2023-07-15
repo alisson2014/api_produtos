@@ -22,4 +22,7 @@ return [
         "PUT" => Produtos\Action\Controller\Client\ClientPutController::class,
         "DELETE" => Produtos\Action\Controller\Client\ClientDeleteController::class
     ],
+    "/orcProd" => [
+        "GET" => Produtos\Action\Controller\Budget\BudgetGetController::class
+    ]
 ];
