@@ -15,6 +15,7 @@ return [
         "POST" => Produtos\Action\Controller\Product\ProductPostController::class,
         "PUT" => Produtos\Action\Controller\Product\ProductPutController::class,
         "DELETE" => Produtos\Action\Controller\Product\ProductDeleteController::class,
+        "OPTIONS" => Produtos\Action\Controller\Product\ProductOptionsController::class
     ],
     "/orcamentos" => [
         "GET" => Produtos\Action\Controller\Client\ClientGetController::class,
