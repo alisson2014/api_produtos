@@ -45,6 +45,6 @@ final class ProductPostController implements RequestHandlerInterface
             return Helper::internalError();
         }
 
-        return Helper::showStatus("Categoria cadastrada com sucesso", 201);
+        return Helper::showStatus("Produto cadastrado com sucesso", 201);
     }
 }

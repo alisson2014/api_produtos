@@ -3,18 +3,26 @@
 declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
+use Produtos\Action\Service\AccessProperties;
+use Produtos\Action\Service\SetProperties;
 
 readonly class Categorie
 {
-    public int $id;
+    use AccessProperties;
+    private int $id;
 
     public function __construct(
-        public string $nomeCategoria
+        private string $nomeCategoria
     ) {
     }
 
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getNomeCategoria(): string 
+    {
+        return $this->nomeCategoria;
     }
 }
