@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
+use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Domain\Model\Product;
 use Produtos\Action\Domain\Repository\ProductRepo;
 use Produtos\Action\Service\FindCategorie;
@@ -24,10 +25,9 @@ final class ProductRepository implements ProductRepo
     {
         $productList = $this->pdo
             ->query(
-                "SELECT p.*,s.nome as nomeCategoria 
-                FROM produto as p 
-                JOIN subcategoria as s 
-                ON s.id = p.subcategoria"
+                "SELECT p.*,s.nome AS nomeCategoria 
+                FROM produto AS p 
+                JOIN subcategoria AS s ON s.id = p.subcategoria"
             )
             ->fetchAll();
 
@@ -45,7 +45,7 @@ final class ProductRepository implements ProductRepo
     {
         $this->pdo->beginTransaction();
         $sql = "INSERT INTO produto (id, nome, valor, subcategoria)
-        VALUES (NULL, :produto, :valor, :categoria_id)";
+                VALUES (NULL, :produto, :valor, :categoria_id)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":produto", $product->nomeProduto);
         $stmt->bindValue(":valor", strval($product->valor));
@@ -82,9 +82,9 @@ final class ProductRepository implements ProductRepo
                 WHERE id = :id LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":id", $product->id, PDO::PARAM_INT);
-        $stmt->bindValue(":produto", $product->nomeProduto, PDO::PARAM_STR);
+        $stmt->bindValue(":produto", $product->nomeProduto);
         $stmt->bindValue(":categoria_id", $product->idCategoria, PDO::PARAM_INT);
-        $stmt->bindValue(":valor", strval($product->valor), PDO::PARAM_STR);
+        $stmt->bindValue(":valor", strval($product->valor));
         $result = $this->tryAction($stmt);
 
         return $result > 0;
@@ -107,7 +107,11 @@ final class ProductRepository implements ProductRepo
 
     private function hydrateProduct(array $productData): Product
     {
-        $product = new Product($productData["nome"], floatval($productData["valor"]), $productData["subcategoria"]);
+        $product = new Product(
+            $productData["nome"], 
+            floatval($productData["valor"]), 
+            $this->findCategorie($productData["subcategoria"])
+        );
         $product->setId($productData["id"]);
 
         return $product;

@@ -12,7 +12,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ProductGetController implements RequestHandlerInterface
 {
-
     public function __construct(
         private ProductRepository $productRepository
     ) {
@@ -39,14 +38,7 @@ final class ProductGetController implements RequestHandlerInterface
     private function listProducts(): ResponseInterface
     {
         $productList = array_map(function (Product $product): array {
-            $category = $this->productRepository->findCategorie($product->idCategoria);
-
-            return [
-                "id" => $product->id,
-                "nomeProduto" => $product->nomeProduto,
-                "categoria" => $category->nomeCategoria,
-                "valor" => $product->valor
-            ];
+            return $this->compactProduct($product);
         }, $this->productRepository->all());
 
         if (empty($productList)) {
@@ -63,14 +55,25 @@ final class ProductGetController implements RequestHandlerInterface
     private function findProduct(int $id): ResponseInterface
     {
         $product = $this->productRepository->find($id);
+
         if (empty($product)) {
             return Helper::nothingFound();
         }
-        $category = $this->productRepository->findCategorie($product->idCategoria);
-        $allOfProduct = [
-            ...get_object_vars($product),
-            "nomeCategoria" => $category->nomeCategoria
-        ];
-        return Helper::showResponse($allOfProduct);
+   
+        return Helper::showResponse($this->compactProduct($product));
+    }
+
+    /**
+     * @param Product $product
+     * @return array
+     */
+    private function compactProduct(Product $product): array 
+    {
+        $id = $product->id;
+        $nomeProduto = $product->nomeProduto;
+        $valor = $product->valor;
+        $categoria = $this->productRepository->findCategorie($product->idCategoria, false);
+    
+        return compact(["id", "nomeProduto", "valor", "categoria"]);
     }
 }

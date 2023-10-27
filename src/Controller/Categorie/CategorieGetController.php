@@ -59,7 +59,7 @@ final class CategorieGetController implements RequestHandlerInterface
      */
     private function findCategorie(int $id): ResponseInterface
     {
-        $categorie = $this->categorieRepository->find($id);
+        $categorie = $this->categorieRepository->find($id, false);
 
         if (empty($categorie)) {
             return Helper::nothingFound();

@@ -13,7 +13,7 @@ readonly class Product
     public function __construct(
         private string $nomeProduto,
         private float $valor,
-        private ?int $idCategoria = null
+        private Categorie $categoria
     ) {
     }
 
@@ -27,9 +27,14 @@ readonly class Product
         return $this->valor;        
     }
 
-    public function getIdCategoria(): int|null
+    public function getCategoria(): Categorie
     {
-        return $this->idCategoria;        
+        return $this->categoria;        
+    }
+
+    public function getIdCategoria(): int
+    {
+        return $this->categoria->getId();
     }
 
     public function setId(int $id): void

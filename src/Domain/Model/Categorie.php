@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
+
 use Produtos\Action\Service\AccessProperties;
-use Produtos\Action\Service\SetProperties;
 
 readonly class Categorie
 {

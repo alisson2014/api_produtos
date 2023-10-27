@@ -38,7 +38,11 @@ final class ProductPostController implements RequestHandlerInterface
             return Helper::invalidRequest($error);
         }
 
-        $product = new Product($produto, $valor, $idCategoria);
+        $product = new Product(
+            $produto, 
+            $valor, 
+            $this->productRepository->findCategorie($idCategoria)
+        );
         $success = $this->productRepository->add($product);
 
         if (!$success) {
