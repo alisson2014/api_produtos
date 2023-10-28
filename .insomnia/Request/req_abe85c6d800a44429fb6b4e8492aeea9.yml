@@ -1,0 +1,23 @@
+_id: req_abe85c6d800a44429fb6b4e8492aeea9
+type: Request
+parentId: fld_cc165e06f30b4ca18807a100f84555b5
+modified: 1698453777079
+created: 1698453725554
+url: http://localhost:8080/categorias?id=262
+name: remove
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1698453725554
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

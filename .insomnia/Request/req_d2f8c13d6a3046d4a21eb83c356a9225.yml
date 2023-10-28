@@ -1,0 +1,30 @@
+_id: req_d2f8c13d6a3046d4a21eb83c356a9225
+type: Request
+parentId: fld_cc165e06f30b4ca18807a100f84555b5
+modified: 1698453667304
+created: 1698451135992
+url: http://localhost:8080/categorias
+name: add
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"nomeCategoria": "Teste Rota POST"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1698450966957
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

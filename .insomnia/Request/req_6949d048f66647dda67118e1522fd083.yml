@@ -1,0 +1,33 @@
+_id: req_6949d048f66647dda67118e1522fd083
+type: Request
+parentId: fld_827abcb4cafd441fa40f164ca06fe765
+modified: 1698453631427
+created: 1698453243898
+url: http://localhost:8080/produtos
+name: update
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    		"id": 46,
+    		"nomeProduto": "Teste Rota Update",
+    		"valor": 200.30,
+    		"idCategoria": 2
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1698453243898
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
