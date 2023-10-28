@@ -13,10 +13,12 @@ readonly class ClientS
 
     public function __construct(
         private string $nomeCliente,
-        private \DateTime $dataNascimento,
-        private int $numeroTelefone,
-        private ?string $email = null
+        string $cpf,
+        private Adress $endereco 
     ) {
+        if ($this->validateCpf($cpf)) {
+            $this->cpf = $cpf;
+        }
     }
 
     public function setId(int $id): void
@@ -29,18 +31,23 @@ readonly class ClientS
         return $this->nomeCliente;
     }
 
-    public function getDataNascimento(): \DateTime
+    public function getCpf(): string
     {
-        return $this->dataNascimento;
+        return $this->cpf;        
     }
 
-    public function getNumeroTelefone(): int
+    private function validateCpf(string $cpf): bool
     {
-        return $this->numeroTelefone;
-    }
+        $cpf = filter_var($cpf, FILTER_VALIDATE_REGEXP, [
+            'options' => [
+                'regexp' => '/^[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}$/'
+            ]
+        ]);
 
-    public function getEmail(): ?string
-    {
-        return $this->email;        
+        if (!$cpf) {
+            throw new \InvalidArgumentException("Erro, cpf inválido!");
+        }
+
+        return true;
     }
 }
