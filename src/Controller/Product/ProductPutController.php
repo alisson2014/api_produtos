@@ -30,7 +30,7 @@ final class ProductPutController implements RequestHandlerInterface
             $error = "Id {$notIsCategory} inválido.";
         } elseif (empty($produto) || !is_string($produto)) {
             $error = "Nome do produto inválido.";
-        } elseif ($valor <= 0 && $valor > (10 ** 8)) {
+        } elseif ($valor <= 0 || $valor > (10 ** 8)) {
             $error = "Valor inválido, valor deve ser maior que 0 e menor que 100 milhões.";
         }
 
@@ -38,7 +38,11 @@ final class ProductPutController implements RequestHandlerInterface
             return Helper::invalidRequest($error);
         }
 
-        $product = new Product($produto, $valor, $idCategoria);
+        $product = new Product(
+            $produto, 
+            $valor, 
+            $this->productRepository->findCategorie($idCategoria)
+        );
         $product->setId($id);
         $success = $this->productRepository->update($product);
 
