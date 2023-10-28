@@ -18,7 +18,7 @@ return [
         "OPTIONS" => Produtos\Action\Controller\Product\ProductOptionsController::class
     ],
     "/enderecos" => [
-        "GET" => Produtos\Action\Controller\Adress\AdressGetController::class,
+        "GET" => Produtos\Action\Controller\Address\AddressGetController::class,
     ],
     "/orcamentos" => [
         "GET" => Produtos\Action\Controller\Client\ClientGetController::class,

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Produtos\Action\Controller\Adress;
+namespace Produtos\Action\Controller\Address;
 
-use Produtos\Action\Domain\Model\Adress;
-use Produtos\Action\Infrastructure\Repository\AdressRepository;
+use Produtos\Action\Domain\Model\Address;
+use Produtos\Action\Infrastructure\Repository\AddressRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class AdressGetController implements RequestHandlerInterface
+final class AddressGetController implements RequestHandlerInterface
 {
     public function __construct(
-        private AdressRepository $adressRepository
+        private AddressRepository $adressRepository
     ) {
     }
 
@@ -43,7 +43,7 @@ final class AdressGetController implements RequestHandlerInterface
             return Helper::nothingFound();
         }
 
-        $addressList = array_map(function (Adress $address): array {
+        $addressList = array_map(function (Address $address): array {
             return $this->compactAddress($address);
         }, $allAddress);
 
@@ -61,7 +61,7 @@ final class AdressGetController implements RequestHandlerInterface
         return Helper::showResponse($address);
     }
 
-    private function compactAddress(Adress $address): array 
+    private function compactAddress(Address $address): array 
     {
         $id = $address->id;
         $cidade = $address->cidade;

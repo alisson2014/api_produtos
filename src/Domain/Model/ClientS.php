@@ -9,7 +9,7 @@ readonly class ClientS extends Model
     public function __construct(
         private string $nomeCliente,
         string $cpf,
-        private Adress $endereco 
+        private Address $endereco 
     ) {
         if ($this->validateCpf($cpf)) {
             $this->cpf = $cpf;

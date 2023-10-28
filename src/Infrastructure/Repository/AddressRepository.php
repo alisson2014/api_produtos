@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
-use Produtos\Action\Domain\Model\Adress;
-use Produtos\Action\Domain\Repository\AdressRepo;
-use Produtos\Action\Service\FindAdress;
+use Produtos\Action\Domain\Model\Address;
+use Produtos\Action\Domain\Repository\AddressRepo;
+use Produtos\Action\Service\FindAddress;
 use Produtos\Action\Service\TryAction;
 
-final class AdressRepository implements AdressRepo
+final class AddressRepository implements AddressRepo
 {
-    use TryAction, FindAdress {
-        FindAdress::findAdress as find;
+    use TryAction, FindAddress {
+        FindAddress::findAddress as find;
     }
     
     public function __construct(
@@ -21,7 +21,7 @@ final class AdressRepository implements AdressRepo
     ) {
     }
 
-    /** @return Adress[] */
+    /** @return Address[] */
     public function all(): ?array
     {
         $adressList = $this->pdo
@@ -33,11 +33,11 @@ final class AdressRepository implements AdressRepo
         }
     
         return array_map(
-            $this->hydrateAdress(...),
+            $this->hydrateAddress(...),
             $adressList
         );
     }
-    public function add(Adress $adress): bool
+    public function add(Address $adress): bool
     {
         $this->pdo->beginTransaction();
         $sql = "INSERT INTO endereco (id, cidade, bairro, rua, numero) 
@@ -81,7 +81,7 @@ final class AdressRepository implements AdressRepo
         return $rowCountStmt > 0;
     }
 
-    public function update(Adress $adress): bool
+    public function update(Address $adress): bool
     {
         $this->pdo->beginTransaction();
         $sql = "UPDATE endereco 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
 
-readonly class Adress extends Model
+readonly class Address extends Model
 {
     public function __construct(
         private string $cidade,

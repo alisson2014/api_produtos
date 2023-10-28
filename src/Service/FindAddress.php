@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Service;
 
-use Produtos\Action\Domain\Model\Adress;
+use Produtos\Action\Domain\Model\Address;
 
-trait FindAdress
+trait FindAddress
 {
-    public function findAdress(int $id, bool $isHydrate = true): null|Adress|array
+    public function findAddress(int $id, bool $isHydrate = true): null|Address|array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM endereco WHERE id = ?");
         $stmt->bindValue(1, $id, \PDO::PARAM_INT);
@@ -19,12 +19,12 @@ trait FindAdress
             return null;
         }
 
-        return $isHydrate ? $this->hydrateAdress($result) : $result;
+        return $isHydrate ? $this->hydrateAddress($result) : $result;
     }
 
-    private function hydrateAdress(array $adressData): Adress
+    private function hydrateAddress(array $adressData): Address
     {
-        $adress = new Adress(
+        $adress = new Address(
             $adressData["cidade"],
             $adressData["bairro"],
             $adressData["rua"],

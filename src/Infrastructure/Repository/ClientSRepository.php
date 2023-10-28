@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
-use Produtos\Action\Domain\Model\Adress;
+use Produtos\Action\Domain\Model\Address;
 use Produtos\Action\Domain\Model\ClientS;
-use Produtos\Action\Service\FindAdress;
+use Produtos\Action\Service\FindAddress;
 use Produtos\Action\Service\TryAction;
 
 final class ClientSRepository
 {
-    use TryAction, FindAdress;
+    use TryAction, FindAddress;
 
     public function __construct(
         private PDO $pdo
@@ -87,7 +87,7 @@ final class ClientSRepository
         $adress = new ClientS(
             $clientData["nomeCliente"],
             $clientData["cpf"],
-            $this->findAdress($clientData["id"])
+            $this->findAddress($clientData["id"])
         );
         $adress->setId($clientData["id"]);
 
