@@ -1,0 +1,23 @@
+_id: req_e34d312894cf4230a5b4993c04bd4c7e
+type: Request
+parentId: fld_827abcb4cafd441fa40f164ca06fe765
+modified: 1698451904614
+created: 1698451790332
+url: http://localhost:8080/produtos?id=2
+name: findById
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1698451790332
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

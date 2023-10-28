@@ -1,0 +1,23 @@
+_id: req_bc3d5ca137fb471bb9c053d1f90aa13f
+type: Request
+parentId: fld_cc165e06f30b4ca18807a100f84555b5
+modified: 1698451537809
+created: 1698451044017
+url: http://localhost:8080/categorias?id=301
+name: findById
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1698450966857
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

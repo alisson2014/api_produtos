@@ -1,0 +1,23 @@
+_id: req_5f0c6f0320c6422db2e9659790c336e8
+type: Request
+parentId: fld_827abcb4cafd441fa40f164ca06fe765
+modified: 1698453626600
+created: 1698453500555
+url: http://localhost:8080/produtos?id=45
+name: remove
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1698453500555
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

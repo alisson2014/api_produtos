@@ -1,0 +1,32 @@
+_id: req_1ceb01c6f98c4c0c93a456dfd55d8c45
+type: Request
+parentId: fld_827abcb4cafd441fa40f164ca06fe765
+modified: 1698453637867
+created: 1698451973804
+url: http://localhost:8080/produtos
+name: add
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"nomeProduto": "Teste Rota POST",
+    	"valor": 200.30,
+    	"idCategoria": 2
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1698451973804
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
