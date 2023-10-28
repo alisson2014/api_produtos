@@ -39,6 +39,11 @@ readonly class Adress
         return $this->numero;
     }
 
+    public function setId(int $id): void
+    {
+        $this->id = $id;        
+    }
+
     public function setCidade(string $novaCidade): void
     {
         $this->cidade = $novaCidade;
