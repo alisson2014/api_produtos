@@ -90,8 +90,8 @@ final class ProductRepository implements ProductRepo
         return $result > 0;
     }
 
-    /** @return Product|[] */
-    public function find(int $id): Product|array
+    /** @return ?Product */
+    public function find(int $id): ?Product
     {
         $stmt = $this->pdo->prepare("SELECT * FROM produto WHERE id = ?;");
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
@@ -99,7 +99,7 @@ final class ProductRepository implements ProductRepo
         $result = $stmt->fetch();
 
         if (!$result) {
-            return [];
+            return null;
         }
 
         return $this->hydrateProduct($result);

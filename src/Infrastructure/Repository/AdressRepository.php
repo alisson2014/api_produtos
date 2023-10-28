@@ -18,14 +18,14 @@ final class AdressRepository implements AdressRepo
     }
 
     /** @return Adress[] */
-    public function all(): array
+    public function all(): ?array
     {
         $adressList = $this->pdo
             ->query("SELECT * FROM endereco ORDER BY id ASC")
             ->fetchAll();
 
         if (count($adressList) === 0) {
-            return [];
+            return null;
         }
     
         return array_map(

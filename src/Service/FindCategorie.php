@@ -8,7 +8,7 @@ use Produtos\Action\Domain\Model\Categorie;
 
 trait FindCategorie
 {
-    public function findCategorie(int $id, bool $isHydrate = true): Categorie|array
+    public function findCategorie(int $id, bool $isHydrate = true): ?Categorie
     {
         $stmt = $this->pdo->prepare("SELECT * FROM subcategoria WHERE id = ?;");
         $stmt->bindValue(1, $id, \PDO::PARAM_INT);
@@ -16,7 +16,7 @@ trait FindCategorie
         $result = $stmt->fetch();
 
         if (!$result) {
-            return [];
+            return null;
         }
 
         return $isHydrate ? $this->hydrateCategorie($result) : $result;

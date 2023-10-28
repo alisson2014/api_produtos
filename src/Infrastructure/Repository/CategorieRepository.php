@@ -20,15 +20,15 @@ final class CategorieRepository implements CategorieRepo
     ) {
     }
 
-    /** @return Categorie[] */
-    public function all(): array
+    /** @return ?Categorie[] */
+    public function all(): ?array
     {
         $categorieList = $this->pdo
             ->query("SELECT * FROM subcategoria ORDER BY id ASC")
             ->fetchAll();
 
         if (count($categorieList) === 0) {
-            return [];
+            return null;
         }
 
         return array_map(

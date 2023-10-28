@@ -12,5 +12,5 @@ interface ClientRepo extends Repository
 {
     public function add(Client $client): bool;
     public function update(Client $client): bool;
-    public function find(int $id): Client|array;
+    public function find(int $id): ?Client;
 }
