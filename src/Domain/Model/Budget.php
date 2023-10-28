@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
-use Produtos\Action\Service\AccessProperties;
 
-readonly class Budget
+readonly class Budget extends Model
 {
-    use AccessProperties;
     private int $id;
 
     public function __construct(
@@ -30,10 +28,5 @@ readonly class Budget
     public function getTotal(): float
     {
         return $this->total;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 }

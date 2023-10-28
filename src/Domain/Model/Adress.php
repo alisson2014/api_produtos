@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
 
-use Produtos\Action\Service\AccessProperties;
-
-readonly class Adress
+readonly class Adress extends Model
 {
-    use AccessProperties;
     private int $id;
 
     public function __construct(
@@ -37,11 +34,6 @@ readonly class Adress
     public function getNumero(): string
     {
         return $this->numero;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;        
     }
 
     public function setCidade(string $novaCidade): void

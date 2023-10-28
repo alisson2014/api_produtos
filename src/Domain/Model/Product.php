@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
-use Produtos\Action\Service\AccessProperties;
 
-readonly class Product
+readonly class Product extends Model
 {
-    use AccessProperties;
     private int $id;
 
     public function __construct(
@@ -35,10 +33,5 @@ readonly class Product
     public function getIdCategoria(): int
     {
         return $this->categoria->getId();
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 }

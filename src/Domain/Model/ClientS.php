@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
 
-use Produtos\Action\Service\AccessProperties;
-
-readonly class ClientS
+readonly class ClientS extends Model
 {
-    use AccessProperties;
     private int $id;
 
     public function __construct(
@@ -19,11 +16,6 @@ readonly class ClientS
         if ($this->validateCpf($cpf)) {
             $this->cpf = $cpf;
         }
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getNomeCliente(): string
