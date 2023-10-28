@@ -10,5 +10,5 @@ interface AdressRepo extends Repository
 {
     public function add(Adress $adress): bool;
     public function update(Adress $adress): bool;
-    public function find(int $id): ?Adress;
+    public function find(int $id): null|Adress|array;
 }

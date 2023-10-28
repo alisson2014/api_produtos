@@ -8,7 +8,7 @@ use Produtos\Action\Domain\Model\Adress;
 
 trait FindAdress
 {
-    public function findAdress(int $id, bool $isHydrate = true): ?Adress
+    public function findAdress(int $id, bool $isHydrate = true): null|Adress|array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM endereco WHERE id = ?");
         $stmt->bindValue(1, $id, \PDO::PARAM_INT);
