@@ -6,8 +6,6 @@ namespace Produtos\Action\Domain\Model;
 
 readonly class ClientS extends Model
 {
-    private int $id;
-
     public function __construct(
         private string $nomeCliente,
         string $cpf,

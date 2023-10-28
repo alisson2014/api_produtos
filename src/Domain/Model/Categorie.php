@@ -6,8 +6,6 @@ namespace Produtos\Action\Domain\Model;
 
 readonly class Categorie extends Model
 {
-    private int $id;
-
     public function __construct(
         private string $nomeCategoria
     ) {

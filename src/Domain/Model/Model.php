@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
 
-abstract class Model 
+readonly abstract class Model 
 {
+    protected int $id;
     public function getId(): int
     {
         return $this->id;

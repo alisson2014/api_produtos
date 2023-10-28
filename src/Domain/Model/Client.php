@@ -8,8 +8,6 @@ use DateTime;
 
 readonly class Client extends Model
 {
-    private int $id;
-
     public function __construct(
         private string $nomeCliente,
         private DateTime $dataOrcamento

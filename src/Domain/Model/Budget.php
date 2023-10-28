@@ -6,8 +6,6 @@ namespace Produtos\Action\Domain\Model;
 
 readonly class Budget extends Model
 {
-    private int $id;
-
     public function __construct(
         private Client $client,
         private Product $product,
