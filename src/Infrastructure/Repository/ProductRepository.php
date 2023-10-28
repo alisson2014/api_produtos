@@ -20,8 +20,8 @@ final class ProductRepository implements ProductRepo
     ) {
     }
 
-    /** @return Product[] */
-    public function all(): array
+    /** @return ?Product */
+    public function all(): ?array
     {
         $productList = $this->pdo
             ->query(
@@ -32,7 +32,7 @@ final class ProductRepository implements ProductRepo
             ->fetchAll();
 
         if (count($productList) === 0) {
-            return [];
+            return null;
         }
 
         return array_map(

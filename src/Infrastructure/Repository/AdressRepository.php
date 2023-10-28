@@ -7,11 +7,15 @@ namespace Produtos\Action\Infrastructure\Repository;
 use PDO;
 use Produtos\Action\Domain\Model\Adress;
 use Produtos\Action\Domain\Repository\AdressRepo;
+use Produtos\Action\Service\FindAdress;
 use Produtos\Action\Service\TryAction;
 
 final class AdressRepository implements AdressRepo
 {
-    use TryAction;
+    use TryAction, FindAdress {
+        FindAdress::findAdress as find;
+    }
+    
     public function __construct(
         private PDO $pdo
     ) {
@@ -33,21 +37,6 @@ final class AdressRepository implements AdressRepo
             $adressList
         );
     }
-
-    public function find(int $id): ?Adress
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM endereco WHERE id = ?");
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetch();
-
-        if (!$result) {
-            return null;
-        }
-
-        return $this->hydrateAdress($result);
-    }
-
     public function add(Adress $adress): bool
     {
         $this->pdo->beginTransaction();
@@ -90,19 +79,6 @@ final class AdressRepository implements AdressRepo
         $rowCountStmt = $stmtHasClient->rowCount();
 
         return $rowCountStmt > 0;
-    }
-
-    private function hydrateAdress(array $adressData): Adress
-    {
-        $adress = new Adress(
-            $adressData["cidade"],
-            $adressData["bairro"],
-            $adressData["rua"],
-            $adressData["numero"],
-        );
-        $adress->setId($adressData["id"]);
-
-        return $adress;
     }
 
     public function update(Adress $adress): bool

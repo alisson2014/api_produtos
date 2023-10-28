@@ -36,6 +36,11 @@ readonly class ClientS
         return $this->cpf;        
     }
 
+    public function getIdEndereco(): int
+    {
+        return $this->endereco->getId();
+    }
+
     private function validateCpf(string $cpf): bool
     {
         $cpf = filter_var($cpf, FILTER_VALIDATE_REGEXP, [
