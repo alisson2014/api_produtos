@@ -17,15 +17,15 @@ final class BudgetRepository implements BudgetRepo
     ) {
     }
 
-    /** @return Budget[] */
-    public function all(): array
+    /** @return ?Budget[] */
+    public function all(): ?array
     {
         $budgetsList = $this->pdo
             ->query("SELECT o.id AS idOrcamento, o.nomeCliente  AS nomeCliente, o.data AS data, p.id AS idProduto, p.nome AS nomeProduto, p.valor AS valorProduto, SUM(p.valor * po.quantidade) AS total FROM orcamento AS o JOIN produtosorcamento AS po ON po.orcamento = o.id JOIN produto AS p ON p.id = po.produto GROUP BY o.id")
             ->fetchAll();
 
         if (count($budgetsList) === 0) {
-            return [];
+            return null;
         }
 
         return array_map(
@@ -34,7 +34,7 @@ final class BudgetRepository implements BudgetRepo
         );
     }
 
-    public function find(int $id): Budget|array
+    public function find(int $id): ?Budget
     {
         $stmt = $this->pdo->prepare(
             "SELECT o.id AS idOrcamento, 
@@ -56,7 +56,7 @@ final class BudgetRepository implements BudgetRepo
         $result = $stmt->fetch();
 
         if (!$result) {
-            return [];
+            return null;
         }
 
         return $this->hydrateBudget($result);

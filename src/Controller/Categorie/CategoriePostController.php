@@ -20,7 +20,7 @@ final class CategoriePostController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = json_decode($request->getBody()->getContents());
-        $nomeCategoria = $body->nomeCategoria;
+        $nomeCategoria = $body->nomeCategoria ?? null;
 
         if (empty($nomeCategoria)) {
             return Helper::invalidRequest("Nome da categoria não pode ser vazio");

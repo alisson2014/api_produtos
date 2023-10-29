@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
-use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -37,20 +36,13 @@ final class CategorieGetController implements RequestHandlerInterface
     /** @return ResponseInterface */
     private function listCategories(): ResponseInterface
     {
-        $allCategories = $this->categorieRepository->all();
+        $allCategories = $this->categorieRepository->all(false);
 
         if (empty($allCategories)) {
             return Helper::nothingFound();
         }
 
-        $categorieList = array_map(function (Categorie $categorie): array {
-            return [
-                "id" => $categorie->id,
-                "nomeCategoria" => $categorie->nomeCategoria
-            ];
-        }, $allCategories);
-
-        return Helper::showResponse($categorieList);
+        return Helper::showResponse($allCategories);
     }
 
     /**

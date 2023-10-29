@@ -11,9 +11,4 @@ trait AccessProperties
         $method = "get" . ucfirst($method);
         return $this->$method();
     }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
 }

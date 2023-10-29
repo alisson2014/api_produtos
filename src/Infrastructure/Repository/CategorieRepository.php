@@ -20,21 +20,20 @@ final class CategorieRepository implements CategorieRepo
     ) {
     }
 
-    /** @return Categorie[] */
-    public function all(): array
+    /** @return ?Categorie[] */
+    public function all(bool $isHydrate = true): ?array
     {
         $categorieList = $this->pdo
             ->query("SELECT * FROM subcategoria ORDER BY id ASC")
             ->fetchAll();
 
         if (count($categorieList) === 0) {
-            return [];
+            return null;
         }
 
-        return array_map(
-            $this->hydrateCategorie(...),
-            $categorieList
-        );
+        return $isHydrate 
+                ? array_map($this->hydrateCategorie(...), $categorieList)
+                : $categorieList;
     }
 
     public function add(Categorie $categorie): bool
@@ -42,7 +41,7 @@ final class CategorieRepository implements CategorieRepo
         $this->pdo->beginTransaction();
         $sql = "INSERT INTO subcategoria (id, nome) VALUES (NULL, ?)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(1, $categorie->nomeCategoria, PDO::PARAM_STR);
+        $stmt->bindValue(1, $categorie->nomeCategoria);
         $status = $this->tryAction($stmt, true);
         $result = $status["result"];
 
@@ -82,7 +81,7 @@ final class CategorieRepository implements CategorieRepo
         $this->pdo->beginTransaction();
         $sql = "UPDATE subcategoria SET nome = :nome WHERE id = :id LIMIT 1;";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":nome", $categorie->nomeCategoria, PDO::PARAM_STR);
+        $stmt->bindValue(":nome", $categorie->nomeCategoria);
         $stmt->bindValue(":id", $categorie->id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);
 

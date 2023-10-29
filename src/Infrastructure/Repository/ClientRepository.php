@@ -18,15 +18,15 @@ final class ClientRepository implements ClientRepo
     ) {
     }
 
-    /** @return Client[] */
-    public function all(): array
+    /** @return ?Client[] */
+    public function all(): ?array
     {
         $clientList = $this->pdo
             ->query("SELECT * FROM orcamento ORDER BY data DESC")
             ->fetchAll();
 
         if (count($clientList) === 0) {
-            return [];
+            return null;
         }
 
         return array_map(
@@ -35,7 +35,7 @@ final class ClientRepository implements ClientRepo
         );
     }
 
-    public function find(int $id): Client|array
+    public function find(int $id): ?Client
     {
         $stmt = $this->pdo->prepare("SELECT * FROM orcamento WHERE id = ?;");
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
@@ -43,7 +43,7 @@ final class ClientRepository implements ClientRepo
         $result = $stmt->fetch();
 
         if (!$result) {
-            return [];
+            return null;
         }
 
         return $this->hydrateClient($result);

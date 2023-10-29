@@ -20,8 +20,8 @@ final class ProductRepository implements ProductRepo
     ) {
     }
 
-    /** @return Product[] */
-    public function all(): array
+    /** @return ?Product[] */
+    public function all(bool $isHydrate = true): ?array
     {
         $productList = $this->pdo
             ->query(
@@ -32,13 +32,12 @@ final class ProductRepository implements ProductRepo
             ->fetchAll();
 
         if (count($productList) === 0) {
-            return [];
+            return null;
         }
 
-        return array_map(
-            $this->hydrateProduct(...),
-            $productList
-        );
+        return $isHydrate 
+                ? array_map($this->hydrateProduct(...), $productList)
+                : $productList;
     }
 
     public function add(Product $product): bool
@@ -90,8 +89,7 @@ final class ProductRepository implements ProductRepo
         return $result > 0;
     }
 
-    /** @return Product|[] */
-    public function find(int $id): Product|array
+    public function find(int $id, bool $isHydrate = true): null|Product|array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM produto WHERE id = ?;");
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
@@ -99,10 +97,10 @@ final class ProductRepository implements ProductRepo
         $result = $stmt->fetch();
 
         if (!$result) {
-            return [];
+            return null;
         }
 
-        return $this->hydrateProduct($result);
+        return $isHydrate ? $this->hydrateProduct($result) : $result;
     }
 
     private function hydrateProduct(array $productData): Product

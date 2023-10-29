@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace Produtos\Action\Domain\Model;
 
 use DateTime;
-use Produtos\Action\Service\AccessProperties;
 
-readonly class Client
+readonly class Client extends Model
 {
-    use AccessProperties;
-    private int $id;
-
     public function __construct(
         private string $nomeCliente,
         private DateTime $dataOrcamento
@@ -26,10 +22,5 @@ readonly class Client
     public function getDataOrcamento(): DateTime
     {
         return $this->dataOrcamento;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 }

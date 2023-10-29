@@ -6,6 +6,6 @@ namespace Produtos\Action\Domain\Repository;
 
 interface Repository
 {
-    public function all(): array;
+    public function all(bool $isHydrate = true): ?array;
     public function remove(int $id): bool;
 }

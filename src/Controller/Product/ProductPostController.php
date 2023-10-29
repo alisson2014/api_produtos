@@ -28,7 +28,7 @@ final class ProductPostController implements RequestHandlerInterface
 
         if (empty($produto) || !is_string($produto)) {
             $error = "Nome do produto inválido.";
-        } elseif ($valor <= 0 && $valor > (10 ** 8)) {
+        } elseif ($valor <= 0 || $valor > (10 ** 8)) {
             $error = "Valor inválido, valor deve ser maior que 0 e menor que 100 milhões.";
         } else if (!$idCategoria) {
             $error = "Id inválido.";
@@ -38,11 +38,13 @@ final class ProductPostController implements RequestHandlerInterface
             return Helper::invalidRequest($error);
         }
 
-        $product = new Product(
-            $produto, 
-            $valor, 
-            $this->productRepository->findCategorie($idCategoria)
-        );
+        $categorie = $this->productRepository->findCategorie($idCategoria);
+
+        if(empty($categorie)) {
+            return Helper::showStatus("Categoria inválida para cadastro de produto.", 422, "error");
+        }
+
+        $product = new Product($produto, $valor, $categorie);
         $success = $this->productRepository->add($product);
 
         if (!$success) {

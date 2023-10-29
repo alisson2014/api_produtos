@@ -10,5 +10,5 @@ interface BudgetRepo extends Repository
 {
     public function add(Budget $budget): bool;
     public function update(Budget $budget): bool;
-    public function find(int $id): Budget|array;
+    public function find(int $id, bool $isHydrate = true): ?Budget;
 }
