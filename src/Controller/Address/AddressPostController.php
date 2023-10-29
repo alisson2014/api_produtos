@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Produtos\Action\Controller\Address;
+
+use Produtos\Action\Infrastructure\Repository\AddressRepository;
+use Produtos\Action\Service\Helper;
+use Produtos\Action\Service\ViaCep;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+final class AddressPostController implements RequestHandlerInterface
+{
+    public function __construct(
+        private AddressRepository $addressRepository
+    ) {
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $body = json_decode($request->getBody()->getContents(), true);
+        $cep = $body["cep"];
+
+        if (empty($cep) || strlen($cep) < 8) {
+            return Helper::invalidRequest("CEP inválido!");
+        }
+
+        return Helper::showResponse(ViaCep::findByCep($cep));
+    }
+}

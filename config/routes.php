@@ -19,6 +19,7 @@ return [
     ],
     "/enderecos" => [
         "GET" => Produtos\Action\Controller\Address\AddressGetController::class,
+        "POST" => Produtos\Action\Controller\Address\AddressPostController::class
     ],
     "/orcamentos" => [
         "GET" => Produtos\Action\Controller\Client\ClientGetController::class,
