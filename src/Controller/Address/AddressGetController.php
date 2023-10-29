@@ -37,17 +37,13 @@ final class AddressGetController implements RequestHandlerInterface
     /** @return ResponseInterface */
     private function listAddress(): ResponseInterface
     {
-        $allAddress = $this->adressRepository->all();
+        $allAddress = $this->adressRepository->all(false);
 
         if (empty($allAddress)) {
             return Helper::nothingFound();
         }
 
-        $addressList = array_map(function (Address $address): array {
-            return $this->compactAddress($address);
-        }, $allAddress);
-
-        return Helper::showResponse($addressList);
+        return Helper::showResponse($allAddress);
     }
 
     private function findAddress(int $id): ResponseInterface
@@ -59,18 +55,5 @@ final class AddressGetController implements RequestHandlerInterface
         }
 
         return Helper::showResponse($address);
-    }
-
-    private function compactAddress(Address $address): array 
-    {
-        $id = $address->id;
-        $cep = $address->cep;
-        $uf = $address->uf;
-        $cidade = $address->cidade;
-        $bairro = $address->bairro;
-        $logradouro = $address->logradouro;
-        $numero = $address->numero;
-        
-        return compact(["id", "cep", "uf", "cidade", "bairro", "logradouro", "numero"]);
     }
 }

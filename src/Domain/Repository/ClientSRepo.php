@@ -10,5 +10,5 @@ interface ClientSRepo extends Repository
 {
     public function add(ClientS $client): bool;
     public function update(ClientS $client): bool;
-    public function find(int $id): ?ClientS;
+    public function find(int $id, bool $isHydrate = true): ?ClientS;
 }

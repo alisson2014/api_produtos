@@ -21,7 +21,7 @@ final class CategorieRepository implements CategorieRepo
     }
 
     /** @return ?Categorie[] */
-    public function all(): ?array
+    public function all(bool $isHydrate = true): ?array
     {
         $categorieList = $this->pdo
             ->query("SELECT * FROM subcategoria ORDER BY id ASC")
@@ -31,10 +31,9 @@ final class CategorieRepository implements CategorieRepo
             return null;
         }
 
-        return array_map(
-            $this->hydrateCategorie(...),
-            $categorieList
-        );
+        return $isHydrate 
+                ? array_map($this->hydrateCategorie(...), $categorieList)
+                : $categorieList;
     }
 
     public function add(Categorie $categorie): bool
