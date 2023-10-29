@@ -25,9 +25,11 @@ trait FindAddress
     private function hydrateAddress(array $adressData): Address
     {
         $adress = new Address(
+            $adressData["cep"],
+            $adressData["uf"],
             $adressData["cidade"],
             $adressData["bairro"],
-            $adressData["rua"],
+            $adressData["logradouro"],
             $adressData["numero"],
         );
         $adress->setId($adressData["id"]);

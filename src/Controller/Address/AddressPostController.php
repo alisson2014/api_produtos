@@ -6,7 +6,6 @@ namespace Produtos\Action\Controller\Address;
 
 use Produtos\Action\Infrastructure\Repository\AddressRepository;
 use Produtos\Action\Service\Helper;
-use Produtos\Action\Service\ViaCep;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -23,10 +22,10 @@ final class AddressPostController implements RequestHandlerInterface
         $body = json_decode($request->getBody()->getContents(), true);
         $cep = $body["cep"];
 
-        if (empty($cep) || strlen($cep) < 8) {
+        if (empty($cep) || strlen((string)$cep) < 8) {
             return Helper::invalidRequest("CEP inválido!");
         }
 
-        return Helper::showResponse(ViaCep::findByCep($cep));
+        return Helper::showResponse($this->addressRepository->findByCep($cep));
     }
 }

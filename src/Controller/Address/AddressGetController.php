@@ -64,11 +64,13 @@ final class AddressGetController implements RequestHandlerInterface
     private function compactAddress(Address $address): array 
     {
         $id = $address->id;
+        $cep = $address->cep;
+        $uf = $address->uf;
         $cidade = $address->cidade;
         $bairro = $address->bairro;
-        $rua = $address->rua;
+        $logradouro = $address->logradouro;
         $numero = $address->numero;
         
-        return compact(["id", "cidade", "bairro", "rua", "numero"]);
+        return compact(["id", "cep", "uf", "cidade", "bairro", "logradouro", "numero"]);
     }
 }

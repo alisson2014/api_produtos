@@ -40,12 +40,14 @@ final class AddressRepository implements AddressRepo
     public function add(Address $adress): bool
     {
         $this->pdo->beginTransaction();
-        $sql = "INSERT INTO endereco (id, cidade, bairro, rua, numero) 
-                VALUES (NULL, :cidade, : bairro, :rua, :numero)";
+        $sql = "INSERT INTO endereco (id, cep, uf, cidade, bairro, logradouro, numero) 
+                VALUES (NULL, :cep, :uf, :cidade, :bairro, :logradouro, :numero)";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":cep", $adress->cep, PDO::PARAM_INT);
+        $stmt->bindValue(":uf", $adress->uf);
         $stmt->bindValue(":cidade", $adress->cidade);
         $stmt->bindValue(":bairro", $adress->bairro);
-        $stmt->bindValue(":rua", $adress->rua);
+        $stmt->bindValue(":logradouro", $adress->logradouro);
         $stmt->bindValue(":numero", $adress->numero);
         $status = $this->tryAction($stmt, true);
         $result = $status["result"];
@@ -85,19 +87,42 @@ final class AddressRepository implements AddressRepo
     {
         $this->pdo->beginTransaction();
         $sql = "UPDATE endereco 
-                SET cidade = :cidade,
+                SET cep = :cep
+                    uf = :uf
+                    cidade = :cidade,
                     bairro = :bairro,
-                    rua = :rua,
+                    logradouro = :logradouro,
                     numero = :numero 
                 WHERE id = :id;";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":cep", $adress->cep, PDO::PARAM_INT);
+        $stmt->bindValue(":uf", $adress->uf);
         $stmt->bindValue(":cidade", $adress->cidade);
         $stmt->bindValue(":bairro", $adress->bairro);
-        $stmt->bindValue(":rua", $adress->rua);
+        $stmt->bindValue(":logradouro", $adress->logradouro);
         $stmt->bindValue(":numero", $adress->numero);
         $stmt->bindValue(":id", $adress->id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);
 
         return $result > 0;
+    }
+
+    public function findByCep(int $cep): ?array
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://viacep.com.br/ws/{$cep}/json/",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => "GET",
+        ]);
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $resArray = json_decode($response, true);
+
+        return isset($resArray["cep"]) ? $resArray : null;
     }
 }
