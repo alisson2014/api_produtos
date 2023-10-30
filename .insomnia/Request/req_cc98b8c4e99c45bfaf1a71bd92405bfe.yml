@@ -1,19 +1,23 @@
-_id: req_2444c2658dbc4247a77bce01b47865dd
+_id: req_cc98b8c4e99c45bfaf1a71bd92405bfe
 type: Request
 parentId: fld_d35f44ae9c6a4cb18114c7be49533fe7
-modified: 1698708938982
-created: 1698611083252
+modified: 1698709215566
+created: 1698708968283
 url: http://localhost:8080/enderecos
-name: addByCep
+name: addByAddress
 description: ""
 method: POST
 body:
   mimeType: application/json
   text: |-
     {
-    	"isByCep": true,
-    	"cep": 27971721,
-    	"numero": "144"
+    	"isByCep": false,
+    	"cidade": "João Pessoa",
+    	"uf": "PB",
+    	"bairro": "Indústrias",
+    	"logradouro": "Rua das Cereijeiras",
+    	"numero": "22A",
+    	"cep": 58083343
     }
 parameters: []
 headers:
@@ -22,7 +26,7 @@ headers:
   - name: User-Agent
     value: insomnia/2023.5.8
 authentication: {}
-metaSortKey: -1698611083252
+metaSortKey: -1698708968283
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true
