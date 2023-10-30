@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Address;
 
-use Produtos\Action\Domain\Model\Address;
 use Produtos\Action\Infrastructure\Repository\AddressRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
