@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Produtos\Action\Controller\Product;
 
 use Produtos\Action\Domain\Model\Product;

@@ -20,6 +20,7 @@ return [
     "/enderecos" => [
         "GET" => Produtos\Action\Controller\Address\AddressGetController::class,
         "POST" => Produtos\Action\Controller\Address\AddressPostController::class,
+        "PUT" => Produtos\Action\Controller\Address\AddressPutController::class,
         "DELETE" => Produtos\Action\Controller\Address\AddressDeleteController::class,
         "OPTIONS" => Produtos\Action\Controller\Address\AddressOptionsController::class
     ],

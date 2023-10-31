@@ -86,8 +86,8 @@ final class AddressRepository implements AddressRepo
     {
         $this->pdo->beginTransaction();
         $sql = "UPDATE endereco 
-                SET cep = :cep
-                    uf = :uf
+                SET cep = :cep,
+                    uf = :uf,
                     cidade = :cidade,
                     bairro = :bairro,
                     logradouro = :logradouro,
