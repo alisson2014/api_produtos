@@ -4,19 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
-use Nyholm\Psr7\Response;
-use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
-use Psr\Http\Server\RequestHandlerInterface;
+use Produtos\Action\Controller\OptionsController;
 
-final class CategorieOptionsController implements RequestHandlerInterface
-{
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        return new Response(200, [
-            "Access-Control-Allow-Origin" => "http://localhost:3000",
-            "Access-Control-Allow-Headers" => "*",
-            "Access-Control-Allow-Methods" => "OPTIONS, GET, POST, PUT, DELETE",
-            "Content-Type" => "application/json; charset=UTF-8",
-        ]);
-    }
-}
+final class CategorieOptionsController extends OptionsController 
+{}
