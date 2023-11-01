@@ -52,4 +52,9 @@ final class Helper
     {
        return json_decode($req->getBody()->getContents()); 
     }
+
+    public static function filterInt(mixed $id): int
+    {
+        return filter_var($id, FILTER_VALIDATE_INT) ? : 0;
+    }
 }

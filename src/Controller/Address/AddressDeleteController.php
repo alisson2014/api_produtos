@@ -19,7 +19,7 @@ final class AddressDeleteController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-        $id = filter_var($queryParams["id"], FILTER_VALIDATE_INT);
+        $id = Helper::filterInt($queryParams["id"]);
     
         if (!$id) {
             return Helper::invalidRequest("Id inválido");

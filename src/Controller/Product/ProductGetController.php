@@ -28,7 +28,7 @@ final class ProductGetController implements RequestHandlerInterface
             return $this->listProducts();
         }
 
-        $this->id = filter_var($id, FILTER_VALIDATE_INT);
+        $this->id = Helper::filterInt($id);
         if (!$this->id) {
             return Helper::invalidRequest("Id inválido.");
         }

@@ -20,7 +20,7 @@ final class AddressPutController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {   
         $body = Helper::getBody($request);
-        $id = isset($body->id) ? filter_var($body->id, FILTER_VALIDATE_INT) : null;
+        $id = isset($body->id) ? Helper::filterInt($body->id) : null;
         
         /** @var ?Address */
         $address = $this->addressRepository->find($id);
@@ -29,7 +29,7 @@ final class AddressPutController implements RequestHandlerInterface
             return Helper::nothingFound();
         }
         
-        $cep = isset($body->cep) ? filter_var($body->cep, FILTER_VALIDATE_INT) : null;
+        $cep = isset($body->cep) ? Helper::filterInt($body->cep) : null;
         $numero = isset($body->numero) ? $body->numero : null;
     
         if ($body->isByCep) {

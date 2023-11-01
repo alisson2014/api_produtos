@@ -27,7 +27,7 @@ final class AddressPostController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = Helper::getBody($request);
-        $this->cep = isset($body->cep) ? filter_var($body->cep, FILTER_VALIDATE_INT) : null;
+        $this->cep = isset($body->cep) ? Helper::filterInt($body->cep) : null;
         $this->numero = isset($body->numero) ? $body->numero : null;
 
         if (empty($this->cep) || strlen(strval($this->cep)) < 8) {
