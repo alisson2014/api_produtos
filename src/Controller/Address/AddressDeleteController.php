@@ -25,9 +25,7 @@ final class AddressDeleteController implements RequestHandlerInterface
             return Helper::invalidRequest("Id inválido");
         }
     
-        $result = $this->addressRepository->remove($id);
-    
-        if (!$result) {
+        if (!$this->addressRepository->remove($id)) {
             return Helper::internalError();
         }
     

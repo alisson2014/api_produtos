@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Produtos\Action\Controller\Product;
 
 use Produtos\Action\Infrastructure\Repository\ProductRepository;
@@ -23,9 +25,7 @@ final class ProductDeleteController implements RequestHandlerInterface
             return Helper::invalidRequest("Id inválido");
         }
 
-        $result = $this->productRepository->remove($id);
-
-        if (!$result) {
+        if (!$this->productRepository->remove($id)) {
             return Helper::internalError();
         }
 
