@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Categorie;
 
+use Nyholm\Psr7\Response;
 use Produtos\Action\Infrastructure\Repository\CategorieRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -11,6 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class CategorieGetController implements RequestHandlerInterface
 {
+    private int $id;
     public function __construct(
         private CategorieRepository $categorieRepository
     ) {
@@ -25,38 +27,29 @@ final class CategorieGetController implements RequestHandlerInterface
             return $this->listCategories();
         }
 
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if (!$id) {
+        $this->id = filter_var($id, FILTER_VALIDATE_INT);
+        if (!$this->id) {
             return Helper::invalidRequest("Id inválido");
         }
 
-        return $this->findCategorie($id);
+        return $this->findCategorie();
     }
 
-    /** @return ResponseInterface */
-    private function listCategories(): ResponseInterface
+    private function listCategories(): Response
     {
         $allCategories = $this->categorieRepository->all(false);
 
-        if (empty($allCategories)) {
-            return Helper::nothingFound();
-        }
-
-        return Helper::showResponse($allCategories);
+        return empty($allCategories) 
+                ? Helper::nothingFound() 
+                : Helper::showResponse($allCategories);
     }
 
-    /**
-     * @param int $id
-     * @return ResponseInterface
-     */
-    private function findCategorie(int $id): ResponseInterface
+    private function findCategorie(): Response
     {
-        $categorie = $this->categorieRepository->find($id, false);
+        $categorie = $this->categorieRepository->find($this->id, false);
 
-        if (empty($categorie)) {
-            return Helper::nothingFound();
-        }
-
-        return Helper::showResponse($categorie);
+        return empty($categorie) 
+                ? Helper::nothingFound() 
+                : Helper::showResponse($categorie);
     }
 }

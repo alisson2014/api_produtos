@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Product;
 
+use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Product;
 use Produtos\Action\Infrastructure\Repository\ProductRepository;
 use Produtos\Action\Service\Helper;
@@ -12,6 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ProductGetController implements RequestHandlerInterface
 {
+    private int $id;
     public function __construct(
         private ProductRepository $productRepository
     ) {
@@ -26,35 +28,28 @@ final class ProductGetController implements RequestHandlerInterface
             return $this->listProducts();
         }
 
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if (!$id) {
+        $this->id = filter_var($id, FILTER_VALIDATE_INT);
+        if (!$this->id) {
             return Helper::invalidRequest("Id inválido.");
         }
 
-        return $this->findProduct($id);
+        return $this->findProduct();
     }
 
-    /** @return ResponseInterface */
-    private function listProducts(): ResponseInterface
+    private function listProducts(): Response
     {
         $productList = array_map(function (Product $product): array {
             return $this->compactProduct($product);
         }, $this->productRepository->all());
 
-        if (empty($productList)) {
-            return Helper::nothingFound();
-        }
-
-        return Helper::showResponse($productList);
+        return empty($productList) 
+                ? Helper::nothingFound() 
+                : Helper::showResponse($productList);
     }
 
-    /**
-     * @param int $id
-     * @return ResponseInterface
-     */
-    private function findProduct(int $id): ResponseInterface
+    private function findProduct(): Response
     {
-        $product = $this->productRepository->find($id);
+        $product = $this->productRepository->find($this->id);
 
         if (empty($product)) {
             return Helper::nothingFound();
@@ -63,10 +58,6 @@ final class ProductGetController implements RequestHandlerInterface
         return Helper::showResponse($this->compactProduct($product));
     }
 
-    /**
-     * @param Product $product
-     * @return array
-     */
     private function compactProduct(Product $product): array 
     {
         $id = $product->id;
