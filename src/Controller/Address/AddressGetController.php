@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Address;
 
+use Nyholm\Psr7\Response;
 use Produtos\Action\Infrastructure\Repository\AddressRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -11,6 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class AddressGetController implements RequestHandlerInterface
 {
+    private int $id;
     public function __construct(
         private AddressRepository $adressRepository
     ) {
@@ -25,34 +27,29 @@ final class AddressGetController implements RequestHandlerInterface
             return $this->listAddress();
         }
 
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if (!$id) {
+        $this->id = filter_var($id, FILTER_VALIDATE_INT);
+        if (!$this->id) {
             return Helper::invalidRequest("Id inválido");
         }
 
-        return $this->findAddress($id);
+        return $this->findAddress();
     }
 
-    /** @return ResponseInterface */
-    private function listAddress(): ResponseInterface
+    private function listAddress(): Response
     {
         $allAddress = $this->adressRepository->all(false);
 
-        if (empty($allAddress)) {
-            return Helper::nothingFound();
-        }
-
-        return Helper::showResponse($allAddress);
+        return empty($allAddress) 
+                ? Helper::nothingFound() 
+                : Helper::showResponse($allAddress);
     }
 
-    private function findAddress(int $id): ResponseInterface
+    private function findAddress(): Response
     {
-        $address = $this->adressRepository->find($id, false);
+        $address = $this->adressRepository->find($this->id, false);
 
-        if (empty($address)) {
-            return Helper::nothingFound();
-        }
-
-        return Helper::showResponse($address);
+        return empty($address) 
+                ? Helper::nothingFound() 
+                : Helper::showResponse($address);
     }
 }
