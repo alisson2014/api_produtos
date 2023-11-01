@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Produtos\Action\Service;
 
 use Nyholm\Psr7\Response;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class Helper
 {
@@ -45,5 +46,10 @@ final class Helper
             "message" => $message
         ];
         return new Response($code, self::ACCESS_HEADERS, json_encode($response));
+    }
+
+    public static function getBody(ServerRequestInterface $req): mixed
+    {
+       return json_decode($req->getBody()->getContents()); 
     }
 }

@@ -19,7 +19,7 @@ final class ProductPostController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $body = json_decode($request->getBody()->getContents());
+        $body = Helper::getBody($request);
         $produto = isset($body->nomeProduto) ? $body->nomeProduto : null;
         $valor = isset($body->valor) ? filter_var($body->valor, FILTER_VALIDATE_FLOAT) : null;
         $idCategoria = isset($body->idCategoria) ? filter_var($body->idCategoria, FILTER_VALIDATE_INT) : null;

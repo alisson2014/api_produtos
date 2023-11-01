@@ -19,7 +19,7 @@ final class CategoriePostController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $body = json_decode($request->getBody()->getContents());
+        $body = Helper::getBody($request);
         $nomeCategoria = $body->nomeCategoria ?? null;
 
         if (empty($nomeCategoria)) {

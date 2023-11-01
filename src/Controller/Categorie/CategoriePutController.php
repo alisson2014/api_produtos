@@ -19,7 +19,7 @@ final class CategoriePutController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $body = json_decode($request->getBody()->getContents());
+        $body = Helper::getBody($request);
         $id = filter_var($body->id, FILTER_VALIDATE_INT);
         $nomeCategoria = $body->nomeCategoria;
 

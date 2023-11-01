@@ -19,7 +19,7 @@ final class ProductPutController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $body = json_decode($request->getBody()->getContents());
+        $body = Helper::getBody($request);
         $id = isset($body->id) ? filter_var($body->id, FILTER_VALIDATE_INT) : null;
         $idCategoria = isset($body->idCategoria) ? filter_var($body->idCategoria, FILTER_VALIDATE_INT) : null;
         $valor = isset($body->valor) ? filter_var($body->valor, FILTER_VALIDATE_FLOAT) : null;
