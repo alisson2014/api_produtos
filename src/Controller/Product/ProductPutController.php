@@ -24,7 +24,7 @@ final class ProductPutController implements RequestHandlerInterface
         try {
             $id = Helper::validaId($body->id);
             $idCategoria = Helper::validaId($body->idCategoria);
-            $valor = Helper::validaFloat($body->valor);
+            $valor = Helper::validaValor($body->valor);
             $produto = Helper::notNull($body->nomeProduto);
         } catch (\InvalidArgumentException $ex) {
             return Helper::invalidRequest($ex->getMessage());

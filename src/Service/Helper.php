@@ -84,12 +84,12 @@ final class Helper
     }
 
     /** @throws InvalidArgumentException */
-    public static function validaFloat(mixed $value): float
+    public static function validaValor(mixed $value): float
     {   
         $value = isset($value) ? filter_var($value, FILTER_VALIDATE_FLOAT) : null;
 
-        if (empty($value)) {
-            throw new InvalidArgumentException("Valor não pode ser vázio!");
+        if (empty($value) || ($value <= 0 || $value > (10 ** 8))) {
+            throw new InvalidArgumentException("Valor inválido, valor deve ser maior que 0 e menor que 100 milhões.");
         }
 
         return $value;

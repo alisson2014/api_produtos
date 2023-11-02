@@ -23,7 +23,7 @@ final class ProductPostController implements RequestHandlerInterface
 
         try {
             $produto = Helper::notNull($body->nomeProduto, "Nome do produto");
-            $valor = Helper::validaFloat($body->valor);
+            $valor = Helper::validaValor($body->valor);
             $idCategoria = Helper::validaId($body->idCategoria);
         } catch (\InvalidArgumentException $ex) {
             return Helper::invalidRequest($ex->getMessage());

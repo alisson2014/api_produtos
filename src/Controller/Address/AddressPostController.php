@@ -31,7 +31,7 @@ final class AddressPostController implements RequestHandlerInterface
         
         try {
             $this->cep = Helper::validaCep($body->cep);
-            $this->numero = Helper::notNull($body->numero);
+            $this->numero = Helper::notNull($body->numero, "Número");
         } catch (InvalidArgumentException $ex) {
             return Helper::invalidRequest($ex->getMessage());
         }
@@ -41,10 +41,10 @@ final class AddressPostController implements RequestHandlerInterface
         }
 
         try {
-            $this->localidade = Helper::notNull($body->cidade);
-            $this->uf = Helper::notNull($body->uf);
-            $this->bairro = Helper::notNull($body->bairro);
-            $this->logradouro = Helper::notNull($body->logradouro);
+            $this->localidade = Helper::notNull($body->cidade, "Cidade");
+            $this->uf = Helper::notNull($body->uf, "Estado");
+            $this->bairro = Helper::notNull($body->bairro, "Bairro");
+            $this->logradouro = Helper::notNull($body->logradouro, "Logradouro");
         } catch (InvalidArgumentException $ex) {
             return Helper::invalidRequest($ex->getMessage());
         }
