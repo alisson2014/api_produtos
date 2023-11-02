@@ -20,22 +20,13 @@ final class ProductPostController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = Helper::getBody($request);
-        $produto = isset($body->nomeProduto) ? $body->nomeProduto : null;
-        $valor = isset($body->valor) ? filter_var($body->valor, FILTER_VALIDATE_FLOAT) : null;
-        $idCategoria = isset($body->idCategoria) ? filter_var($body->idCategoria, FILTER_VALIDATE_INT) : null;
 
-        $error = "";
-
-        if (empty($produto) || !is_string($produto)) {
-            $error = "Nome do produto inválido.";
-        } elseif ($valor <= 0 || $valor > (10 ** 8)) {
-            $error = "Valor inválido, valor deve ser maior que 0 e menor que 100 milhões.";
-        } else if (!$idCategoria) {
-            $error = "Id inválido.";
-        }
-
-        if (!empty($error)) {
-            return Helper::invalidRequest($error);
+        try {
+            $produto = Helper::notNull($body->nomeProduto, "Nome do produto");
+            $valor = Helper::validaFloat($body->valor);
+            $idCategoria = Helper::validaId($body->idCategoria);
+        } catch (\InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
         $categorie = $this->productRepository->findCategorie($idCategoria);
@@ -45,9 +36,8 @@ final class ProductPostController implements RequestHandlerInterface
         }
 
         $product = new Product($produto, $valor, $categorie);
-        $success = $this->productRepository->add($product);
 
-        if (!$success) {
+        if (!$this->productRepository->add($product)) {
             return Helper::internalError();
         }
 

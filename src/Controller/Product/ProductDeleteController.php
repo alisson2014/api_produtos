@@ -19,10 +19,11 @@ final class ProductDeleteController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-        $id = Helper::filterInt($queryParams["id"]);
-
-        if (!$id) {
-            return Helper::invalidRequest("Id inválido");
+        
+        try {
+            $id = Helper::validaId($queryParams["id"]);
+        } catch (\InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
         if (!$this->productRepository->remove($id)) {

@@ -84,6 +84,18 @@ final class Helper
     }
 
     /** @throws InvalidArgumentException */
+    public static function validaFloat(mixed $value): float
+    {   
+        $value = isset($value) ? filter_var($value, FILTER_VALIDATE_FLOAT) : null;
+
+        if (empty($value)) {
+            throw new InvalidArgumentException("Valor não pode ser vázio!");
+        }
+
+        return $value;
+    }   
+
+    /** @throws InvalidArgumentException */
     public static function notNull(mixed $value, string $var = "Valor"): mixed
     {
         $value = isset($value) ? $value : null;
