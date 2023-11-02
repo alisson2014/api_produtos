@@ -23,14 +23,5 @@ return [
         "PUT" => Produtos\Action\Controller\Address\AddressPutController::class,
         "DELETE" => Produtos\Action\Controller\Address\AddressDeleteController::class,
         "OPTIONS" => Produtos\Action\Controller\Address\AddressOptionsController::class
-    ],
-    "/orcamentos" => [
-        "GET" => Produtos\Action\Controller\Client\ClientGetController::class,
-        "POST" => Produtos\Action\Controller\Client\ClientPostController::class,
-        "PUT" => Produtos\Action\Controller\Client\ClientPutController::class,
-        "DELETE" => Produtos\Action\Controller\Client\ClientDeleteController::class
-    ],
-    "/orcProd" => [
-        "GET" => Produtos\Action\Controller\Budget\BudgetGetController::class
     ]
 ];
