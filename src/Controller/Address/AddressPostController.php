@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Address;
 
+use InvalidArgumentException;
 use Produtos\Action\Domain\Model\Address;
 use Produtos\Action\Infrastructure\Repository\AddressRepository;
 use Produtos\Action\Service\Helper;
@@ -27,32 +28,25 @@ final class AddressPostController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = Helper::getBody($request);
-        $this->cep = isset($body->cep) ? Helper::filterInt($body->cep) : null;
-        $this->numero = isset($body->numero) ? $body->numero : null;
-
-        if (empty($this->cep) || strlen(strval($this->cep)) < 8) {
-            return Helper::invalidRequest("CEP inválido!");
-        } else if (empty($this->numero)) {
-            return Helper::invalidRequest("Insira o número da residência!");
+        
+        try {
+            $this->cep = Helper::validaCep($body->cep);
+            $this->numero = Helper::notNull($body->numero);
+        } catch (InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
         if ($body->isByCep) {
             return $this->addByCep();
         }
 
-        $this->localidade = isset($body->cidade) ? $body->cidade : null;
-        $this->uf = isset($body->uf) ? $body->uf : null;
-        $this->bairro = isset($body->bairro) ? $body->bairro : null;
-        $this->logradouro = isset($body->logradouro) ? $body->logradouro : null;
-
-        if (empty($this->localidade)) {
-            return Helper::invalidRequest("Preencha a cidade.");
-        } else if (empty($this->uf)) {
-            return Helper::invalidRequest("Preencha o estado.");
-        } else if (empty($this->bairro)) {
-            return Helper::invalidRequest("Preencha o bairro.");
-        } else if (empty($this->logradouro)) {
-            return Helper::invalidRequest("Preencha o logradouro.");
+        try {
+            $this->localidade = Helper::notNull($body->cidade);
+            $this->uf = Helper::notNull($body->uf);
+            $this->bairro = Helper::notNull($body->bairro);
+            $this->logradouro = Helper::notNull($body->logradouro);
+        } catch (InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
         return $this->addAddress();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Service;
 
+use InvalidArgumentException;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -56,5 +57,29 @@ final class Helper
     public static function filterInt(mixed $id): int
     {
         return filter_var($id, FILTER_VALIDATE_INT) ? : 0;
+    }
+
+    /** @throws InvalidArgumentException */
+    public static function validaCep(int $cep): int
+    {
+        $cep =  isset($cep) ? Helper::filterInt($cep) : null;
+
+        if (empty($cep) || strlen(strval($cep)) < 8) {
+            throw new InvalidArgumentException("CEP inválido!");
+        }
+
+        return $cep;
+    }
+
+    /** @throws InvalidArgumentException */
+    public static function notNull(mixed $value): mixed
+    {
+        $value = isset($value) ? $value : null;
+
+        if (empty($value)) {
+            throw new InvalidArgumentException("Insira o número da residência!");
+        }
+
+        return $value;
     }
 }

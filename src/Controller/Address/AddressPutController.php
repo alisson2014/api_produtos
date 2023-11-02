@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\Address;
 
+use InvalidArgumentException;
 use Produtos\Action\Domain\Model\Address;
 use Produtos\Action\Infrastructure\Repository\AddressRepository;
 use Produtos\Action\Service\Helper;
@@ -29,8 +30,12 @@ final class AddressPutController implements RequestHandlerInterface
             return Helper::nothingFound();
         }
         
-        $cep = isset($body->cep) ? Helper::filterInt($body->cep) : null;
-        $numero = isset($body->numero) ? $body->numero : null;
+        try {
+            $cep = Helper::validaCep($body->cep);
+            $numero = Helper::notNull($body->numero);
+        } catch (InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
+        }
     
         if ($body->isByCep) {
             $address = $this->addressRepository->findByCep($cep);
@@ -54,19 +59,13 @@ final class AddressPutController implements RequestHandlerInterface
             return Helper::showStatus("Endereço atualizado com sucesso", 200);
         }
 
-        $localidade = isset($body->cidade) ? $body->cidade : null;
-        $uf = isset($body->uf) ? $body->uf : null;
-        $bairro = isset($body->bairro) ? $body->bairro : null;
-        $logradouro = isset($body->logradouro) ? $body->logradouro : null;
-
-        if (empty($localidade)) {
-            return Helper::invalidRequest("Preencha a cidade.");
-        } else if (empty($uf)) {
-            return Helper::invalidRequest("Preencha o estado.");
-        } else if (empty($bairro)) {
-            return Helper::invalidRequest("Preencha o bairro.");
-        } else if (empty($logradouro)) {
-            return Helper::invalidRequest("Preencha o logradouro.");
+        try {
+            $localidade = Helper::notNull($body->cidade);
+            $uf = Helper::notNull($body->uf);
+            $bairro = Helper::notNull($body->bairro);
+            $logradouro = Helper::notNull($body->logradouro);
+        } catch (InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
         $newAddress = new Address($cep, $uf, $localidade, $bairro, $logradouro, $numero);
