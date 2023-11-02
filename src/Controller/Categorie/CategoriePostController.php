@@ -20,16 +20,16 @@ final class CategoriePostController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = Helper::getBody($request);
-        $nomeCategoria = $body->nomeCategoria ?? null;
 
-        if (empty($nomeCategoria)) {
+        try {
+            $nomeCategoria = Helper::notNull($body->nomeCategoria);
+        } catch (\InvalidArgumentException) {
             return Helper::invalidRequest("Nome da categoria não pode ser vazio");
         }
 
         $categorie = new Categorie($nomeCategoria);
-        $success = $this->categorieRepository->add($categorie);
 
-        if (!$success) {
+        if (!$this->categorieRepository->add($categorie)) {
             return Helper::internalError();
         }
 
