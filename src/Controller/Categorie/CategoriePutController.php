@@ -20,19 +20,15 @@ final class CategoriePutController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = Helper::getBody($request);
-        $id = Helper::filterInt($body->id);
-
-        if (!$id) {
-            return Helper::invalidRequest("Id inválido");
-        }
 
         try {
-            $nomeCategoria = Helper::notNull($body->nomeCategoria);
-        } catch (\InvalidArgumentException) {
-            return Helper::invalidRequest("Nome da categoria não pode ser vázio.");
+            $id = Helper::validaId($body->id);
+            $categorieName = Helper::notNull($body->nomeCategoria, "Nome da categoria");
+        } catch (\InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
-        $categorie = new Categorie($nomeCategoria);
+        $categorie = new Categorie($categorieName);
         $categorie->setId($id);
 
         if (!$this->categorieRepository->update($categorie)) {

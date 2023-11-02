@@ -22,9 +22,9 @@ final class CategoriePostController implements RequestHandlerInterface
         $body = Helper::getBody($request);
 
         try {
-            $nomeCategoria = Helper::notNull($body->nomeCategoria);
-        } catch (\InvalidArgumentException) {
-            return Helper::invalidRequest("Nome da categoria não pode ser vazio");
+            $nomeCategoria = Helper::notNull($body->nomeCategoria, "Nome da categoria");
+        } catch (\InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
         $categorie = new Categorie($nomeCategoria);

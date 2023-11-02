@@ -27,9 +27,10 @@ final class CategorieGetController implements RequestHandlerInterface
             return $this->listCategories();
         }
 
-        $this->id = Helper::filterInt($id);
-        if (!$this->id) {
-            return Helper::invalidRequest("Id inválido");
+        try {
+            $this->id = Helper::validaId($id);
+        } catch (\InvalidArgumentException $ex) {
+            return Helper::invalidRequest($ex->getMessage());
         }
 
         return $this->findCategorie();

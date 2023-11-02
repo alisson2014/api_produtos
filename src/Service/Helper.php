@@ -60,6 +60,18 @@ final class Helper
     }
 
     /** @throws InvalidArgumentException */
+    public static function validaId(mixed $id): int
+    {
+        $id = self::filterInt($id);
+
+        if (!$id) {
+            throw new InvalidArgumentException("Id inválido");
+        }
+
+        return $id;
+    }
+
+    /** @throws InvalidArgumentException */
     public static function validaCep(int $cep): int
     {
         $cep =  isset($cep) ? Helper::filterInt($cep) : null;
@@ -72,12 +84,12 @@ final class Helper
     }
 
     /** @throws InvalidArgumentException */
-    public static function notNull(mixed $value): mixed
+    public static function notNull(mixed $value, string $var = "Valor"): mixed
     {
         $value = isset($value) ? $value : null;
 
         if (empty($value)) {
-            throw new InvalidArgumentException("Insira o número da residência!");
+            throw new InvalidArgumentException("{$var} não pode ser vázio!");
         }
 
         return $value;
