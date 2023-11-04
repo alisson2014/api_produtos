@@ -10,6 +10,10 @@
         "psr/http-server-handler": "^1.0",
         "php-di/php-di": "^7.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+
     "scripts": {
         "run-server": "php -S localhost:8080 -t public"
     }
