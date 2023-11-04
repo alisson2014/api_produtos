@@ -36,9 +36,10 @@ final class CategorieRepository implements CategorieRepo
                 : $categorieList;
     }
 
-    public function add(Categorie $categorie): bool
+    public function add(Categorie $categorie, bool $isReturnId = false): bool|int
     {
         $this->pdo->beginTransaction();
+
         $sql = "INSERT INTO subcategoria (id, nome) VALUES (NULL, ?)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(1, $categorie->nomeCategoria);
@@ -47,7 +48,7 @@ final class CategorieRepository implements CategorieRepo
 
         if ($result) {
             $categorie->setId($status["id"]);
-            return true;
+            return $isReturnId ? $status["id"] : true;
         }
 
         return $result > 0;
@@ -79,7 +80,8 @@ final class CategorieRepository implements CategorieRepo
     public function update(Categorie $categorie): bool
     {
         $this->pdo->beginTransaction();
-        $sql = "UPDATE subcategoria SET nome = :nome WHERE id = :id LIMIT 1;";
+
+        $sql = "UPDATE subcategoria SET nome = :nome WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":nome", $categorie->nomeCategoria);
         $stmt->bindValue(":id", $categorie->id, PDO::PARAM_INT);

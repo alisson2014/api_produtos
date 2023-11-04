@@ -8,7 +8,7 @@ use Produtos\Action\Domain\Model\Categorie;
 
 interface CategorieRepo extends Repository
 {
-    public function add(Categorie $categorie): bool;
+    public function add(Categorie $categorie): bool|int;
     public function update(Categorie $categorie): bool;
     public function find(int $id, bool $isHydrate = true): null|Categorie|array;
 }

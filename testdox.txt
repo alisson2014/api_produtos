@@ -1,0 +1,5 @@
+Dao Categorie (Produtos\Tests\Integration\Dao\DaoCategorie)
+ [x] Should update categorie
+ [x] Should be remove categories with data set #0
+ [x] Should be create three categories with data set #0
+
