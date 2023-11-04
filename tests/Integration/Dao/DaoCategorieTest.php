@@ -23,14 +23,14 @@ class DaoCategorieTest extends TestCase
 
     public function testShouldUpdateCategorie(): void
     {     
-        $id = self::$categorieRepository->add(new Categorie("teste"), true);
+        $id = self::$categorieRepository->add(new Categorie("teste"));
         $categorie = new Categorie("teste_update");
         $categorie->setId($id);
 
         $result = self::$categorieRepository->update($categorie);
         $dbCategorie = self::$categorieRepository->find($id);
 
-        self::assertTrue($result);
+        self::assertNotFalse($result);
         self::assertInstanceOf(Categorie::class, $dbCategorie);
         self::assertSame("teste_update", $dbCategorie->nomeCategoria);
         self::assertSame($id, $dbCategorie->id);
@@ -56,7 +56,7 @@ class DaoCategorieTest extends TestCase
     {
         foreach ($categories as $categorie) {        
             $result = self::$categorieRepository->add($categorie);
-            self::assertTrue($result);
+            self::assertNotFalse($result);
         }
 
         $dbCategories = self::$categorieRepository->all();

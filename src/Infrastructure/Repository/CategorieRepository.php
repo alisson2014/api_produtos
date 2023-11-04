@@ -36,22 +36,23 @@ final class CategorieRepository implements CategorieRepo
                 : $categorieList;
     }
 
-    public function add(Categorie $categorie, bool $isReturnId = false): bool|int
+    public function add(Categorie $categorie): int|false
     {
         $this->pdo->beginTransaction();
 
         $sql = "INSERT INTO subcategoria (id, nome) VALUES (NULL, ?)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(1, $categorie->nomeCategoria);
-        $status = $this->tryAction($stmt, true);
+        $status = $this->tryAction($stmt);
         $result = $status["result"];
-
-        if ($result) {
-            $categorie->setId($status["id"]);
-            return $isReturnId ? $status["id"] : true;
+        
+        if ($result > 0) {
+            $id = $status["id"];
+            $categorie->setId($id);
+            return $id;
         }
 
-        return $result > 0;
+        return false;
     }
 
     public function remove(int $id): bool
@@ -63,7 +64,7 @@ final class CategorieRepository implements CategorieRepo
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);
 
-        return $result > 0;
+        return $result["result"] > 0;
     }
 
     public function hasProduct(int $id): bool
@@ -77,7 +78,7 @@ final class CategorieRepository implements CategorieRepo
         return $rowCountStmt > 0;
     }
 
-    public function update(Categorie $categorie): bool
+    public function update(Categorie $categorie): int|false
     {
         $this->pdo->beginTransaction();
 
@@ -85,8 +86,9 @@ final class CategorieRepository implements CategorieRepo
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":nome", $categorie->nomeCategoria);
         $stmt->bindValue(":id", $categorie->id, PDO::PARAM_INT);
-        $result = $this->tryAction($stmt);
+        $status = $this->tryAction($stmt);
+        $result = $status["result"];
 
-        return $result > 0;
+        return $result > 0 ? $status["id"] : false;
     }
 }
