@@ -17,7 +17,7 @@ class DaoCategorieTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$pdo = ConnectionCreator::createConnection(true);
+        self::$pdo = ConnectionCreator::createMemoryConn();
         self::$categorieRepository = new CategorieRepository(self::$pdo);
     }
 

@@ -1,4 +1,5 @@
-Api Categorie (Produtos\Tests\Integration\Api\ApiCategorie)
- [x] Api rest must return categorie array
- [ ] Api rest must return nothing found
+Dao Categorie (Produtos\Tests\Integration\Dao\DaoCategorie)
+ [x] Should update categorie
+ [x] Should be remove categories with data set #0
+ [x] Should be create three categories with data set #0
 
