@@ -64,7 +64,7 @@ final class Helper
     {
         $id = self::filterInt($id);
 
-        if (!$id) {
+        if (!$id || $id <= 0) {
             throw new InvalidArgumentException("Id inválido");
         }
 
