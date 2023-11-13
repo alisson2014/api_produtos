@@ -49,7 +49,7 @@ final class ProductRepository implements ProductRepo
         $stmt->bindValue(":produto", $product->nomeProduto);
         $stmt->bindValue(":valor", strval($product->valor));
         $stmt->bindValue(":categoria_id", $product->idCategoria, PDO::PARAM_INT);
-        $status = $this->tryAction($stmt, true);
+        $status = $this->tryAction($stmt);
         $result = $status["result"];
 
         if ($result > 0) {
@@ -74,7 +74,7 @@ final class ProductRepository implements ProductRepo
     public function update(Product $product): bool
     {
         $this->pdo->beginTransaction();
-        
+
         $sql = "UPDATE produto 
                 SET nome = :produto, 
                 subcategoria = :categoria_id, 
