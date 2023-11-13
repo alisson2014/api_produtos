@@ -1,2 +1,4 @@
 composer.lock
 /vendor
+testdox.txt
+.phpunit.result.cache
