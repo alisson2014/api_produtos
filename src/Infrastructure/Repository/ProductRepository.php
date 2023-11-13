@@ -74,6 +74,7 @@ final class ProductRepository implements ProductRepo
     public function update(Product $product): bool
     {
         $this->pdo->beginTransaction();
+        
         $sql = "UPDATE produto 
                 SET nome = :produto, 
                 subcategoria = :categoria_id, 

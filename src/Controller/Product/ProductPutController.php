@@ -30,11 +30,13 @@ final class ProductPutController implements RequestHandlerInterface
             return Helper::invalidRequest($ex->getMessage());
         }
 
-        $product = new Product(
-            $produto, 
-            $valor, 
-            $this->productRepository->findCategorie($idCategoria)
-        );
+        $categorie = $this->productRepository->findCategorie($idCategoria);
+
+        if(empty($categorie)) {
+            return Helper::showStatus("Categoria inválida para cadastro de produto.", 422, "error");
+        }
+
+        $product = new Product($produto, $valor, $categorie);
         $product->setId($id);
 
         if (!$this->productRepository->update($product)) {

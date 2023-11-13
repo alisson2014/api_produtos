@@ -13,6 +13,7 @@
     "require-dev": {
         "phpunit/phpunit": "*"
     },
-
-    "scripts": {}
+    "scripts": {
+        "run-tests": "./vendor/bin/phpunit --colors=always"
+    }
 }
