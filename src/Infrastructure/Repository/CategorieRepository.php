@@ -78,7 +78,7 @@ final class CategorieRepository implements CategorieRepo
         return $rowCountStmt > 0;
     }
 
-    public function update(Categorie $categorie): int|false
+    public function update(Categorie $categorie): bool
     {
         $this->pdo->beginTransaction();
 
@@ -89,6 +89,6 @@ final class CategorieRepository implements CategorieRepo
         $status = $this->tryAction($stmt);
         $result = $status["result"];
 
-        return $result > 0 ? $status["id"] : false;
+        return $result > 0;
     }
 }
