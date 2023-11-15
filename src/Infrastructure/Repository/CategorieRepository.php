@@ -67,6 +67,21 @@ final class CategorieRepository implements CategorieRepo
         return $result["result"] > 0;
     }
 
+    /**
+     * @param Categorie[] $categories
+     * @return bool[]
+     */
+    public function removeAll(array $categories): array
+    {
+        $results = [];
+
+        foreach ($categories as $categorie) {
+            $results[$categorie->id] = $this->remove($categorie->id);
+        }
+
+        return $results;
+    }
+
     public function hasProduct(int $id): bool
     {
         $hasProduct = "SELECT * FROM produto WHERE subcategoria = ?";
