@@ -37,17 +37,16 @@ class DaoCategorieTest extends TestCase
     }
 
     #[DataProvider("categories")]
-    public function testShouldBeRemoveCategories(array $categories): void
+    public function testShouldBeRemoveAllCategories(array $categories): void
     {
         foreach ($categories as $categorie) {        
             self::$categorieRepository->add($categorie);
         }
 
-        foreach ($categories as $categorie) {
-            $result = self::$categorieRepository->remove($categorie->id);
-            self::assertTrue($result);
-        }
-
+        $results = self::$categorieRepository->removeAll($categories);
+        
+        self::assertIsArray($results);
+        self::assertContainsOnly("bool", $results);
         self::assertEmpty(self::$categorieRepository->all());
     }
 
