@@ -50,12 +50,20 @@ class DaoCategorieTest extends TestCase
         self::assertEmpty(self::$categorieRepository->all());
     }
 
+    public function testShouldBeRemoveCategorie(): void {
+        $id = self::$categorieRepository->add(new Categorie("removed_categorie"));
+
+        $result = self::$categorieRepository->remove($id);
+
+        self::assertTrue($result);
+        self::assertNull(self::$categorieRepository->find($id));
+    }
+
     #[DataProvider("categories")]
-    public function testShouldBeCreateThreeCategories(array $categories): void
+    public function testShouldBeReturnThreeCategories(array $categories): void
     {
         foreach ($categories as $categorie) {        
-            $result = self::$categorieRepository->add($categorie);
-            self::assertNotFalse($result);
+            self::$categorieRepository->add($categorie);
         }
 
         $dbCategories = self::$categorieRepository->all();
@@ -63,6 +71,19 @@ class DaoCategorieTest extends TestCase
         self::assertContainsOnlyInstancesOf(Categorie::class, $dbCategories);
         self::assertSame("Alimentos", $dbCategories[0]->nomeCategoria);
         self::assertSame("Bebidas", $dbCategories[1]->nomeCategoria);
+    }
+
+    public function testShouldBeCreateCategorie(): void
+    {
+        $testCategorie = new Categorie('teste_create');
+        $result = self::$categorieRepository->add($testCategorie);
+        
+        $dbCategorie = self::$categorieRepository->find($result);
+
+        self::assertNotFalse($result);
+        self::assertInstanceOf(Categorie::class, $dbCategorie);
+        self::assertSame("teste_create", $dbCategorie->nomeCategoria);
+        self::assertSame($result, $dbCategorie->id);
     }
 
     protected function tearDown(): void
