@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS subcategoria (
+    id INTEGER PRIMARY KEY,
+    nome TEXT NOT NULL UNIQUE
+);

@@ -17,7 +17,9 @@ class DaoCategorieTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$pdo = ConnectionCreator::createMemoryConn();
+        self::$pdo = ConnectionCreator::createMemoryConn([
+            'subcategoria', 'produto'
+        ]);
         self::$categorieRepository = new CategorieRepository(self::$pdo);
     }
 
@@ -55,7 +57,8 @@ class DaoCategorieTest extends TestCase
         self::assertEmpty(self::$categorieRepository->all());
     }
 
-    public function testShouldBeRemoveCategorie(): void {
+    public function testShouldBeRemoveCategorie(): void 
+    {
         //Arrange
         $id = self::$categorieRepository->add(new Categorie("removed_categorie"));
 

@@ -25,32 +25,18 @@ final class ConnectionCreator
         return $connection;
     }
 
-    public static function createMemoryConn(string $table = "Subcategoria"): PDO
+    public static function createMemoryConn(array $tables = []): PDO
     {
-        $createTable = "createTable" . ucfirst($table);
         $pdo = new PDO("sqlite::memory:");
-        $pdo->exec(self::$createTable());
+
+        foreach ($tables as $table) {
+            $content = file_get_contents(__DIR__ . "\\{$table}.sql");
+            $pdo->exec($content);
+        }
+
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
         return $pdo;
-    }
-
-    private static function createTableSubcategoria(): string
-    {
-        return "CREATE TABLE IF NOT EXISTS subcategoria (
-            id INTEGER PRIMARY KEY, 
-            nome TEXT
-        )";        
-    }
-
-    private static function createTableProduto(): string
-    {
-        return "CREATE TABLE IF NOT EXISTS produto (
-            id INTEGER PRIMARY KEY,
-            nome TEXT,
-            valor TEXT,
-            subcategoria INTEGER 
-        )";
     }
 
     private static function setTestDataBase(): void
