@@ -7,7 +7,7 @@ namespace Produtos\Action\Domain\Model;
 readonly class Address extends Model
 {
     public function __construct(
-        private int $cep,
+        private string $cep,
         private string $uf,
         private string $cidade,
         private string $bairro,
@@ -16,7 +16,7 @@ readonly class Address extends Model
     ) {
     }
 
-    public function getCep(): int
+    public function getCep(): string
     {
         return $this->cep;
     }
@@ -46,7 +46,7 @@ readonly class Address extends Model
         return $this->numero;
     }
 
-    public function setCep(int $novoCep): void
+    public function setCep(string $novoCep): void
     {
         $this->cep = $novoCep;
     }

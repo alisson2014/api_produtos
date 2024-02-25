@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class AddressPutController implements RequestHandlerInterface
 {
-    private ?int $cep;
+    private ?string $cep;
     private ?string $numero;
     private ?string $localidade;
     private ?string $uf;

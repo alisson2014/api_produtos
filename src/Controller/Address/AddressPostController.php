@@ -13,7 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class AddressPostController implements RequestHandlerInterface
 {
-    private ?int $cep;
+    private ?string $cep;
     private ?string $numero;
     private ?string $localidade;
     private ?string $uf;
@@ -59,8 +59,7 @@ final class AddressPostController implements RequestHandlerInterface
             return Helper::invalidRequest("CEP não encontrado na base de dados dos correios!");
         }
 
-        var_dump($address); exit;
-
+        $this->cep = $address["cep"];
         $this->uf = $address["uf"];
         $this->localidade = $address["localidade"];
         $this->bairro = $address["bairro"];

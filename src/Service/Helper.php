@@ -72,11 +72,11 @@ final class Helper
     }
 
     /** @throws InvalidArgumentException */
-    public static function validaCep(int $cep): int
+    public static function validaCep(string $cep): string
     {
-        $cep =  isset($cep) ? Helper::filterInt($cep) : null;
+        $cep = isset($cep) ? $cep : null;
 
-        if (empty($cep) || strlen(strval($cep)) < 8) {
+        if (empty($cep) || strlen($cep) < 8) {
             throw new InvalidArgumentException("CEP inválido!");
         }
 

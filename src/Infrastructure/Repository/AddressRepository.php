@@ -44,19 +44,23 @@ final class AddressRepository implements AddressRepo
     }
     public function add(Address $address): bool
     {
+        $idCity = $this->findCity($address->cidade);
+        if(is_null($idCity)) {
+            return false;
+        }
+        
         $this->pdo->beginTransaction();
-        $sql = "INSERT INTO endereco (id, cep, uf, cidade, bairro, logradouro, numero) 
-                VALUES (NULL, :cep, :uf, :cidade, :bairro, :logradouro, :numero)";
+        $sql = "INSERT INTO endereco (cep, cidade_id, bairro, rua, numero) 
+                VALUES (:cep, :cidade_id, :bairro, :rua, :numero)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":cep", $address->cep, PDO::PARAM_INT);
-        $stmt->bindValue(":uf", $address->uf);
-        $stmt->bindValue(":cidade", $address->cidade);
+        $stmt->bindValue(":cep", $address->cep);
+        $stmt->bindValue(":cidade_id", $idCity);
         $stmt->bindValue(":bairro", $address->bairro);
-        $stmt->bindValue(":logradouro", $address->logradouro);
+        $stmt->bindValue(":rua", $address->logradouro);
         $stmt->bindValue(":numero", $address->numero);
-        $status = $this->tryAction($stmt, true);
+        $status = $this->tryAction($stmt);
+      
         $result = $status["result"];
-
         if ($result) {
             $address->setId($status["id"]);
             return true;
@@ -90,21 +94,24 @@ final class AddressRepository implements AddressRepo
 
     public function update(Address $address): bool
     {
+        $idCity = $this->findCity($address->cidade);
+        if(is_null($idCity)) {
+            return false;
+        }
+
         $this->pdo->beginTransaction();
         $sql = "UPDATE endereco 
                 SET cep = :cep,
-                    uf = :uf,
-                    cidade = :cidade,
+                    cidade_id = :cidade_id,
                     bairro = :bairro,
-                    logradouro = :logradouro,
+                    rua = :rua,
                     numero = :numero 
                 WHERE id = :id;";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":cep", $address->cep, PDO::PARAM_INT);
-        $stmt->bindValue(":uf", $address->uf);
-        $stmt->bindValue(":cidade", $address->cidade);
+        $stmt->bindValue(":cep", $address->cep);
+        $stmt->bindValue(":cidade_id", $idCity);
         $stmt->bindValue(":bairro", $address->bairro);
-        $stmt->bindValue(":logradouro", $address->logradouro);
+        $stmt->bindValue(":rua", $address->logradouro);
         $stmt->bindValue(":numero", $address->numero);
         $stmt->bindValue(":id", $address->id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);
@@ -112,7 +119,7 @@ final class AddressRepository implements AddressRepo
         return $result > 0;
     }
 
-    public function findByCep(int $cep): ?array
+    public function findByCep(string $cep): ?array
     {
         $curl = curl_init();
 

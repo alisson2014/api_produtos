@@ -16,7 +16,8 @@ trait FindAddress
                     vwe.logradouro,
                     vwe.bairro,
                     vwe.cidade,
-                    vwe.estado
+                    vwe.estado,
+                    vwe.sigla_estado AS uf
                 FROM vw_todos_enderecos vwe
                 WHERE id = ?;";
         $stmt = $this->pdo->prepare($sql);
@@ -29,6 +30,21 @@ trait FindAddress
         }
 
         return $isHydrate ? $this->hydrateAddress($result) : $result;
+    }
+
+    public function findCity(string $city): ?int 
+    {
+        $sql = "SELECT id FROM cidade WHERE nome = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(1, $city);
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        if (!$result) {
+            return null;
+        }
+
+        return $result["id"];
     }
 
     private function hydrateAddress(array $adressData): Address
