@@ -24,9 +24,15 @@ final class AddressRepository implements AddressRepo
     /** @return Address[] */
     public function all(bool $isHydrate = true): ?array
     {
-        $addressList = $this->pdo
-            ->query("SELECT * FROM endereco ORDER BY id ASC")
-            ->fetchAll();
+        $sql = "SELECT 
+                    vwe.id,
+                    vwe.cep,
+                    vwe.logradouro,
+                    vwe.bairro,
+                    vwe.cidade,
+                    vwe.estado
+                FROM vw_todos_enderecos vwe;";
+        $addressList = $this->pdo->query($sql)->fetchAll();
 
         if (count($addressList) === 0) {
             return null;

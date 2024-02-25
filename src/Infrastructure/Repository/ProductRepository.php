@@ -23,13 +23,13 @@ final class ProductRepository implements ProductRepo
     /** @return ?Product[] */
     public function all(bool $isHydrate = true): ?array
     {
-        $productList = $this->pdo
-            ->query(
-                "SELECT p.*,s.nome AS nomeCategoria 
+        $sql = "SELECT 
+                    p.*, 
+                    c.nome AS nomeCategoria 
                 FROM produto AS p 
-                JOIN subcategoria AS s ON s.id = p.subcategoria"
-            )
-            ->fetchAll();
+                    INNER JOIN categoria c ON c.id = p.categoria_id
+                ORDER BY p.id DESC";
+        $productList = $this->pdo->query($sql)->fetchAll();
 
         if (count($productList) === 0) {
             return null;
@@ -43,8 +43,8 @@ final class ProductRepository implements ProductRepo
     public function add(Product $product): bool
     {
         $this->pdo->beginTransaction();
-        $sql = "INSERT INTO produto (id, nome, valor, subcategoria)
-                VALUES (NULL, :produto, :valor, :categoria_id)";
+        $sql = "INSERT INTO produto (nome, valor, categoria_id)
+                VALUES (:produto, :valor, :categoria_id)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":produto", $product->nomeProduto);
         $stmt->bindValue(":valor", strval($product->valor));
@@ -77,9 +77,9 @@ final class ProductRepository implements ProductRepo
 
         $sql = "UPDATE produto 
                 SET nome = :produto, 
-                subcategoria = :categoria_id, 
+                categoria_id = :categoria_id, 
                 valor = :valor
-                WHERE id = :id LIMIT 1";
+                WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":id", $product->id, PDO::PARAM_INT);
         $stmt->bindValue(":produto", $product->nomeProduto);
@@ -92,7 +92,7 @@ final class ProductRepository implements ProductRepo
 
     public function find(int $id, bool $isHydrate = true): null|Product|array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM produto WHERE id = ?;");
+        $stmt = $this->pdo->prepare("SELECT id, nome, valor, categoria_id FROM produto WHERE id = ?;");
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch();
@@ -109,7 +109,7 @@ final class ProductRepository implements ProductRepo
         $product = new Product(
             $productData["nome"], 
             floatval($productData["valor"]), 
-            $this->findCategorie($productData["subcategoria"])
+            $this->findCategorie($productData["categoria_id"])
         );
         $product->setId($productData["id"]);
 

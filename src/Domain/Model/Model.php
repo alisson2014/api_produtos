@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Domain\Model;
 
+/**
+ * class Model
+ * @package Produtos\Action\Domain\Model
+ * @property-read int $id
+ */
 readonly abstract class Model 
 {
     protected int $id;

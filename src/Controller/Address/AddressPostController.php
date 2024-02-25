@@ -59,6 +59,8 @@ final class AddressPostController implements RequestHandlerInterface
             return Helper::invalidRequest("CEP não encontrado na base de dados dos correios!");
         }
 
+        var_dump($address); exit;
+
         $this->uf = $address["uf"];
         $this->localidade = $address["localidade"];
         $this->bairro = $address["bairro"];

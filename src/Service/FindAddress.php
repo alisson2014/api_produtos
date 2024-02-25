@@ -10,7 +10,16 @@ trait FindAddress
 {
     public function findAddress(int $id, bool $isHydrate = true): null|Address|array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM endereco WHERE id = ?");
+        $sql = "SELECT 
+                    vwe.id,
+                    vwe.cep,
+                    vwe.logradouro,
+                    vwe.bairro,
+                    vwe.cidade,
+                    vwe.estado
+                FROM vw_todos_enderecos vwe
+                WHERE id = ?;";
+        $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(1, $id, \PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch();
@@ -29,8 +38,7 @@ trait FindAddress
             $adressData["uf"],
             $adressData["cidade"],
             $adressData["bairro"],
-            $adressData["logradouro"],
-            $adressData["numero"],
+            $adressData["logradouro"]
         );
         $adress->setId($adressData["id"]);
 

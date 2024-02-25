@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Produtos\Action\Infrastructure\Persistence;
 
 use PDO;
-use PhpParser\Node\Stmt\Return_;
 
 final class ConnectionCreator
 {
     private const SERVER = "localhost";
     private const USER = "root";
     private const PASSWORD = "";
-    private static string $dataBase = "produtos like";
+    private static string $dataBase = "desafio_sql";
 
     public static function createConnection(bool $isTestDb = false): PDO
     {

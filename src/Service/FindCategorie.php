@@ -10,7 +10,7 @@ trait FindCategorie
 {
     public function findCategorie(int $id, bool $isHydrate = true): null|Categorie|array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM subcategoria WHERE id = ?;");
+        $stmt = $this->pdo->prepare("SELECT id, nome FROM categoria WHERE id = ?;");
         $stmt->bindValue(1, $id, \PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch();

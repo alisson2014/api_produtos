@@ -12,7 +12,7 @@ readonly class Address extends Model
         private string $cidade,
         private string $bairro,
         private string $logradouro,
-        private string $numero
+        private string|null $numero = null
     ) {
     }
 

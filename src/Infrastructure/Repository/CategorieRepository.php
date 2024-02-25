@@ -24,7 +24,7 @@ final class CategorieRepository implements CategorieRepo
     public function all(bool $isHydrate = true): ?array
     {
         $categorieList = $this->pdo
-            ->query("SELECT * FROM subcategoria ORDER BY id ASC")
+            ->query("SELECT id, nome FROM categoria ORDER BY id")
             ->fetchAll();
 
         if (count($categorieList) === 0) {
@@ -40,7 +40,7 @@ final class CategorieRepository implements CategorieRepo
     {
         $this->pdo->beginTransaction();
 
-        $sql = "INSERT INTO subcategoria (id, nome) VALUES (NULL, ?)";
+        $sql = "INSERT INTO categoria (nome) VALUES (?)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(1, $categorie->nomeCategoria);
         $status = $this->tryAction($stmt);
@@ -59,7 +59,7 @@ final class CategorieRepository implements CategorieRepo
     {
         $this->pdo->beginTransaction();
 
-        $sql = "DELETE FROM subcategoria WHERE id = ?";
+        $sql = "DELETE FROM categoria WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $result = $this->tryAction($stmt);
@@ -84,7 +84,7 @@ final class CategorieRepository implements CategorieRepo
 
     public function hasProduct(int $id): bool
     {
-        $hasProduct = "SELECT * FROM produto WHERE subcategoria = ?";
+        $hasProduct = "SELECT id FROM produto WHERE categoria_id = ?";
         $stmtHasProduct = $this->pdo->prepare($hasProduct);
         $stmtHasProduct->bindValue(1, $id, PDO::PARAM_INT);
         $stmtHasProduct->execute();
@@ -97,7 +97,7 @@ final class CategorieRepository implements CategorieRepo
     {
         $this->pdo->beginTransaction();
 
-        $sql = "UPDATE subcategoria SET nome = :nome WHERE id = :id";
+        $sql = "UPDATE categoria SET nome = :nome WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":nome", $categorie->nomeCategoria);
         $stmt->bindValue(":id", $categorie->id, PDO::PARAM_INT);
