@@ -8,12 +8,11 @@ readonly class Address extends Model
 {
     public function __construct(
         private string $cep,
-        private string $uf,
-        private string $cidade,
+        private City $cidade,
         private string $bairro,
         private string $logradouro,
         private string|null $numero = null
-    ) {
+    ){
     }
 
     public function getCep(): string
@@ -21,12 +20,7 @@ readonly class Address extends Model
         return $this->cep;
     }
 
-    public function getUf(): string
-    {
-        return $this->uf;
-    }
-
-    public function getCidade(): string
+    public function getCidade(): City
     {
         return $this->cidade;
     }
@@ -51,12 +45,7 @@ readonly class Address extends Model
         $this->cep = $novoCep;
     }
 
-    public function setUf(string $novaUf): void
-    {
-        $this->uf = $novaUf;
-    }
-
-    public function setCidade(string $novaCidade): void
+    public function setCidade(City $novaCidade): void
     {
         $this->cidade = $novaCidade;
     }

@@ -32,11 +32,11 @@ trait FindAddress
         return $isHydrate ? $this->hydrateAddress($result) : $result;
     }
 
-    public function findCity(string $city): ?int 
+    public function findCity(int $id): ?string 
     {
-        $sql = "SELECT id FROM cidade WHERE nome = ?";
+        $sql = "SELECT nome FROM cidade WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(1, $city);
+        $stmt->bindValue(1, $id, \PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch();
 
@@ -44,7 +44,7 @@ trait FindAddress
             return null;
         }
 
-        return $result["id"];
+        return $result["nome"];
     }
 
     private function hydrateAddress(array $adressData): Address
