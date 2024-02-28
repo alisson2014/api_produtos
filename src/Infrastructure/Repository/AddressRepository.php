@@ -90,7 +90,6 @@ final class AddressRepository implements AddressRepo
 
     public function update(Address $address): bool
     {
-        var_dump($address); exit;
         $this->pdo->beginTransaction();
         $sql = "UPDATE endereco 
                 SET cep = :cep,

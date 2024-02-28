@@ -17,6 +17,10 @@ return [
         "DELETE" => Produtos\Action\Controller\Product\ProductDeleteController::class,
         "OPTIONS" => Produtos\Action\Controller\Product\ProductOptionsController::class
     ],
+    "/estados" => [
+        "GET" => Produtos\Action\Controller\State\StateGetController::class,
+        "PATCH" => Produtos\Action\Controller\State\StatePatchController::class
+    ],
     "/enderecos" => [
         "GET" => Produtos\Action\Controller\Address\AddressGetController::class,
         "POST" => Produtos\Action\Controller\Address\AddressPostController::class,

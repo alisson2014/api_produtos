@@ -7,6 +7,8 @@ namespace Produtos\Action\Controller\Address;
 use InvalidArgumentException;
 use Nyholm\Psr7\Response;
 use Produtos\Action\Domain\Model\Address;
+use Produtos\Action\Domain\Model\City;
+use Produtos\Action\Domain\Model\State;
 use Produtos\Action\Infrastructure\Repository\AddressRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -16,7 +18,7 @@ final class AddressPutController implements RequestHandlerInterface
 {
     private ?string $cep;
     private ?string $numero;
-    private ?string $localidade;
+    private ?int $cidade_id;
     private ?string $uf;
     private ?string $bairro;
     private ?string $logradouro;
@@ -53,8 +55,9 @@ final class AddressPutController implements RequestHandlerInterface
         }
 
         try {
-            $this->localidade = Helper::notNull($body->cidade, "Cidade");
+            $this->cidade_id = Helper::notNull($body->cidade, "Cidade");
             $this->uf = Helper::notNull($body->uf, "Estado");
+            $this->addressRepository->validState($this->uf);
             $this->bairro = Helper::notNull($body->bairro, "Bairro");
             $this->logradouro = Helper::notNull($body->logradouro, "Logradouro");
         } catch (InvalidArgumentException $ex) {
@@ -73,7 +76,7 @@ final class AddressPutController implements RequestHandlerInterface
         }
 
         $this->uf = $address["uf"];
-        $this->localidade = $address["localidade"];
+        $this->cidade_id = $address["localidade"];
         $this->bairro = $address["bairro"];
         $this->logradouro = $address["logradouro"];
 
@@ -82,10 +85,18 @@ final class AddressPutController implements RequestHandlerInterface
 
     private function updateAddress(int $id): Response
     {
+        $city = $this->addressRepository->findCity($this->cidade_id);
+
+        if(is_null($city)) {
+            return Helper::showStatus("Necessário cadastrar a cidade na base de dados.", 422, "error");
+        }
+
+        $city = new City($city, new State($this->uf));
+        $city->setId($this->cidade_id);
+
         $newAddress = new Address(
             $this->cep, 
-            $this->uf, 
-            $this->localidade, 
+            $city,
             $this->bairro, 
             $this->logradouro, 
             $this->numero
