@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
-use Produtos\Action\Domain\Model\Categorie;
 use Produtos\Action\Domain\Model\Product;
-use Produtos\Action\Domain\Repository\ProductRepo;
-use Produtos\Action\Service\FindCategorie;
-use Produtos\Action\Service\TryAction;
+use Produtos\Action\Domain\Repository\IProductRepository;
+use Produtos\Action\Service\{FindCategorie, TryAction};
 
-final class ProductRepository implements ProductRepo
+final class ProductRepository implements IProductRepository
 {
     use TryAction, FindCategorie;
 

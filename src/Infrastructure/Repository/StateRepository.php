@@ -6,11 +6,10 @@ namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
 use Produtos\Action\Domain\Model\State;
-use Produtos\Action\Domain\Repository\StateRepo;
-use Produtos\Action\Service\FindState;
-use Produtos\Action\Service\TryAction;
+use Produtos\Action\Domain\Repository\IStateRepository;
+use Produtos\Action\Service\{FindState, TryAction};
 
-final class StateRepository implements StateRepo
+final class StateRepository implements IStateRepository
 {
     use TryAction, FindState {
         FindState::findState as find;

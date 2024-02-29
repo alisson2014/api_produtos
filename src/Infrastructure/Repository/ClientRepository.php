@@ -6,10 +6,10 @@ namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
 use Produtos\Action\Domain\Model\Client;
-use Produtos\Action\Domain\Repository\ClientRepo;
+use Produtos\Action\Domain\Repository\IClientRepository;
 use Produtos\Action\Service\TryAction;
 
-final class ClientRepository implements ClientRepo
+final class ClientRepository implements IClientRepository
 {
     use TryAction;
 

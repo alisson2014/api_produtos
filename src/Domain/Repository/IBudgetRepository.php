@@ -6,7 +6,7 @@ namespace Produtos\Action\Domain\Repository;
 
 use Produtos\Action\Domain\Model\Budget;
 
-interface BudgetRepo extends Repository
+interface IBudgetRepository extends IRepository
 {
     public function add(Budget $budget): bool;
     public function update(Budget $budget): bool;

@@ -6,11 +6,11 @@ namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
 use Produtos\Action\Domain\Model\Address;
-use Produtos\Action\Domain\Repository\AddressRepo;
+use Produtos\Action\Domain\Repository\IAddressRepository;
 use Produtos\Action\Service\FindAddress;
 use Produtos\Action\Service\TryAction;
 
-final class AddressRepository implements AddressRepo
+final class AddressRepository implements IAddressRepository
 {
     use TryAction, FindAddress {
         FindAddress::findAddress as find;

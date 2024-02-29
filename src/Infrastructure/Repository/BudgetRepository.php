@@ -6,10 +6,10 @@ namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
 use Produtos\Action\Domain\Model\{Budget, Client, Product};
-use Produtos\Action\Domain\Repository\BudgetRepo;
+use Produtos\Action\Domain\Repository\IBudgetRepository;
 use Produtos\Action\Service\TryAction;
 
-final class BudgetRepository implements BudgetRepo
+final class BudgetRepository implements IBudgetRepository
 {
     use TryAction;
     public function __construct(

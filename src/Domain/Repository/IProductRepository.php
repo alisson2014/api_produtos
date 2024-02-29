@@ -6,7 +6,7 @@ namespace Produtos\Action\Domain\Repository;
 
 use Produtos\Action\Domain\Model\Product;
 
-interface ProductRepo extends Repository
+interface IProductRepository extends IRepository
 {
     public function add(Product $product): bool;
     public function update(Product $product): bool;

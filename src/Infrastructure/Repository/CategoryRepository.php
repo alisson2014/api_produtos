@@ -6,10 +6,10 @@ namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
 use Produtos\Action\Domain\Model\Categorie;
-use Produtos\Action\Domain\Repository\CategorieRepo;
+use Produtos\Action\Domain\Repository\ICategoryRepository;
 use Produtos\Action\Service\{FindCategorie, TryAction};
 
-final class CategorieRepository implements CategorieRepo
+final class CategoryRepository implements ICategoryRepository
 {
     use TryAction, FindCategorie {
         FindCategorie::findCategorie as find;

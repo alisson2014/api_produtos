@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Produtos\Action\Infrastructure\Repository;
 
 use PDO;
-use Produtos\Action\Domain\Model\Address;
 use Produtos\Action\Domain\Model\ClientS;
 use Produtos\Action\Service\FindAddress;
 use Produtos\Action\Service\TryAction;

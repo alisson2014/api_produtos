@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Produtos\Action\Controller\Categorie;
 
 use Produtos\Action\Domain\Model\Categorie;
-use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Produtos\Action\Infrastructure\Repository\CategoryRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
@@ -13,7 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class CategoriePutController implements RequestHandlerInterface
 {
     public function __construct(
-        private CategorieRepository $categorieRepository
+        private CategoryRepository $categorieRepository
     ) {
     }
 

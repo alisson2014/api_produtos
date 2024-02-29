@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Produtos\Action\Controller\Categorie;
 
 use Nyholm\Psr7\Response;
-use Produtos\Action\Infrastructure\Repository\CategorieRepository;
+use Produtos\Action\Infrastructure\Repository\CategoryRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
@@ -14,7 +14,7 @@ final class CategorieGetController implements RequestHandlerInterface
 {
     private int $id;
     public function __construct(
-        private CategorieRepository $categorieRepository
+        private CategoryRepository $categorieRepository
     ) {
     }
 

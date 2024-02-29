@@ -6,7 +6,7 @@ namespace Produtos\Action\Domain\Repository;
 
 use Produtos\Action\Domain\Model\ClientS;
 
-interface ClientSRepo extends Repository
+interface IClientSRepositor extends IRepository
 {
     public function add(ClientS $client): bool;
     public function update(ClientS $client): bool;

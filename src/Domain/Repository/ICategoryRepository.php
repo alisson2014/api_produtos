@@ -6,7 +6,7 @@ namespace Produtos\Action\Domain\Repository;
 
 use Produtos\Action\Domain\Model\Categorie;
 
-interface CategorieRepo extends Repository
+interface ICategoryRepository extends IRepository
 {
     public function add(Categorie $categorie): int|false;
     public function update(Categorie $categorie): bool;
