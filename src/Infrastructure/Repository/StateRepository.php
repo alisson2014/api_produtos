@@ -7,11 +7,14 @@ namespace Produtos\Action\Infrastructure\Repository;
 use PDO;
 use Produtos\Action\Domain\Model\State;
 use Produtos\Action\Domain\Repository\StateRepo;
+use Produtos\Action\Service\FindState;
 use Produtos\Action\Service\TryAction;
 
 final class StateRepository implements StateRepo
 {
-    use TryAction;
+    use TryAction, FindState {
+        FindState::findState as find;
+    }
 
     public function __construct(
         private PDO $pdo
@@ -49,27 +52,5 @@ final class StateRepository implements StateRepo
         $result = $this->tryAction($stmt);
 
         return $result > 0;
-    }
-
-    public function find(int $id, bool $isHydrate = true): null|State|array
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM estado WHERE id = ?;");
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetch();
-
-        if (!$result) {
-            return null;
-        }
-
-        return $isHydrate ? $this->hydrateState($result) : $result;
-    }
-
-    private function hydrateState(array $data): State
-    {
-        $state = new State($data["uf"], $data["descricao"]);
-        $state->setId($data["id"]);
-
-        return $state;
     }
 }

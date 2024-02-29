@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Produtos\Action\Controller\State;
 
-use Produtos\Action\Domain\Model\State;
 use Produtos\Action\Infrastructure\Repository\StateRepository;
 use Produtos\Action\Service\Helper;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
